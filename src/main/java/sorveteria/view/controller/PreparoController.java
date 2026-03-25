@@ -7,7 +7,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 
-import model.FacadeAware;
 import sorveteria.facade.SorveteriaFacade;
 import sorveteria.model.Pedido;
 import sorveteria.observer.Observer;
@@ -80,6 +79,7 @@ public class PreparoController implements Initializable, Observer, FacadeAware {
      o botão delega sempre ao facade, nunca altera o estado diretamente
      */
     private VBox criarCard(Pedido pedido) {
+
         VBox card = new VBox(6);
         card.getStyleClass().add("pedidoCard");
         card.setPadding(new Insets(12, 14, 12, 14));

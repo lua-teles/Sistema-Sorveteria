@@ -12,6 +12,8 @@
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Versão única do JavaFX usada em todo o pom -->
+        <javafx.version>22.0.1</javafx.version>
     </properties>
 
     <dependencies>
@@ -21,22 +23,23 @@
             <artifactId>postgresql</artifactId>
             <version>42.7.3</version>
         </dependency>
-        <!-- JavaFX -->
+
+        <!-- JavaFX — o classifier win/linux/mac baixa os binários nativos corretos -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>17.0.6</version>
+            <version>${javafx.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>17.0.6</version>
+            <version>${javafx.version}</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Compila normalmente -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -47,15 +50,64 @@
                 </configuration>
             </plugin>
 
+            <!--
+                javafx-maven-plugin: use APENAS para rodar durante dev com
+                    mvn clean javafx:run
+                Não precisa de module-info.java para isso funcionar.
+            -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
+                    <!-- Ajuste para o caminho real da sua classe Main -->
                     <mainClass>sorveteria.Main</mainClass>
                 </configuration>
             </plugin>
+
+            <!--
+                maven-shade-plugin: empacota TUDO num único jar executável,
+                incluindo os binários do JavaFX.
+                Qualquer pessoa que clonar o repo roda com:
+                    mvn clean package
+                    java -jar target/Sorveteria_principal-1.0-SNAPSHOT.jar
+
+                O truque está no <transformer> abaixo: ele cria um launcher
+                separado (MainLauncher) que não é o módulo principal, contornando
+                o bloqueio do JavaFX em jars não-modulares.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <shadedArtifactAttached>false</shadedArtifactAttached>
+                            <transformers>
+                                <transformer implementation=
+                                                     "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <!-- MainLauncher é a classe wrapper criada abaixo -->
+                                    <mainClass>sorveteria.MainLauncher</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                        <exclude>module-info.class</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
 </project>

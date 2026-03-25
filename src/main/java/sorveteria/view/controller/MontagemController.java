@@ -153,21 +153,23 @@ public class MontagemController implements Initializable, FacadeAware {
 
             // após fechar o dialog, verifica se o pedido foi finalizado
             if (pedidoAtual.isPago() && mainController != null) {
-                mainController.carregarTela("pedidos.fxml");
+                mainController.irPedidos();
             }
 
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
     //CANCELAR PEDIDO cancela pedido e vai pra lista de pedidos
-    @FXML public void cancelarPedido(ActionEvent e) {
+    @FXML public void cancelarPedido(ActionEvent e) throws Exception {
         if (pedidoAtual != null) {
             facade.cancelarPedido(pedidoAtual);
         }
         if (mainController != null) {
-            mainController.carregarTela("pedidos.fxml");
+            mainController.irPedidos();
         }
     }
 

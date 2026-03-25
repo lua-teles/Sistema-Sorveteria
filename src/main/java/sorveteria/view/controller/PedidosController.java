@@ -12,7 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.FacadeAware;
+import sorveteria.facade.SorveteriaFacade;
+import sorveteria.model.Pedido;
+import sorveteria.observer.Observer;
 
 import java.io.IOException;
 import java.net.URL;
@@ -141,6 +143,7 @@ public class PedidosController implements Initializable, Observer, FacadeAware {
             return new SimpleStringProperty(pg);
         });
 
+
         // coluna Status: exibe um Label com classe CSS de badge
         colStatus.setCellValueFactory(d ->
                 new SimpleStringProperty(resolverStatus(d.getValue())));
@@ -181,7 +184,11 @@ public class PedidosController implements Initializable, Observer, FacadeAware {
                         // abre montagem com o pedido já existente
                         mainController.carregarMontagem(p);
                     } else if ("Em Preparo".equals(st) && mainController != null) {
-                        mainController.carregarTela("preparo.fxml");
+                        try {
+                            mainController.irPreparo();
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                     }
                 });
                 setGraphic(btn);

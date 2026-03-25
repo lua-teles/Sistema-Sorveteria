@@ -41,7 +41,7 @@ public class MainController {
     private void carregarTela(String fxml) throws Exception {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource(fxml));
+                    getClass().getResource("/sorveteria/view/controller/"+fxml));
             container.getChildren().setAll((Node) loader.load());
             Object ctrl = loader.getController();
             // facade em qualquer controller que a declare
@@ -63,7 +63,7 @@ public class MainController {
     public void carregarMontagem(Pedido pedido) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("montagem.fxml"));
+                    getClass().getResource("/sorveteria/view/controller/montagem.fxml"));
             container.getChildren().setAll((Node) loader.load());
 
             MontagemController ctrl = loader.getController();
@@ -77,13 +77,13 @@ public class MainController {
     }
 
     @FXML
-    private void irPedidos() throws Exception {carregarTela("pedidos.fxml");}
+    public void irPedidos() throws Exception {carregarTela("pedidos.fxml");}
     @FXML
-    private void irMontagem() throws Exception {carregarTela("montagem.fxml");}
+    public void irMontagem() throws Exception {carregarTela("montagem.fxml");}
     @FXML
-    private void irPreparo() throws Exception {carregarTela("preparo.fxml");}
+    public void irPreparo() throws Exception {carregarTela("preparo.fxml");}
     @FXML
-    private void irEstoque() throws Exception {carregarTela("estoque.fxml");}
+    public void irEstoque() throws Exception {carregarTela("estoque.fxml");}
     @FXML public void novoPedido() {
         Pedido pedido = facade.criarPedido();
         carregarMontagem(pedido);

@@ -6,6 +6,7 @@ import sorveteria.model.Ingrediente;
 import sorveteria.model.ItemPedido;
 import sorveteria.model.Pedido;
 import sorveteria.observer.PedidoManagerSubject;
+import sorveteria.strategy.PagamentoStrategy;
 
 import java.util.List;
 
@@ -74,6 +75,8 @@ public class SorveteriaFacade {
         System.out.println("[FACADE] Pedido cancelado - ID: " + pedido.getId());
     }
 
+    // USADO NOS CONTROLLERS
+
     public List<Ingrediente> listarIngredientes() {
         return ingredienteDAO.listarTodos();
     }
@@ -83,5 +86,8 @@ public class SorveteriaFacade {
         System.out.println("[FACADE] Estoque atualizado: " + ingrediente.getNome() + " → " + ingrediente.getQuantidade());
     }
 
-
+    public void processarPagamento(Pedido pedido, PagamentoStrategy pagamentoStrategy){
+        pedido.setPagamento(pagamentoStrategy);
+        pedido.pagar();
+    }
 }

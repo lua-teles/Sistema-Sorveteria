@@ -62,7 +62,7 @@ public class Main {
         System.out.printf("Total do pedido: R$ %.2f%n", pedido.calcularTotal());
 
         // 🔥 Aqui vai baixar corretamente "Chocolate" do estoque
-        pedido.pagar(pedido.calcularTotal());
+        pedido.pagar();
 
         System.out.println("Pagamento realizado e estoque atualizado!");
 

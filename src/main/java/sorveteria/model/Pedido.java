@@ -14,10 +14,10 @@ public class Pedido {
     private final List<ItemPedido> itens = new ArrayList<>();
     private PagamentoStrategy pagamento;
     private EstadoPedido estado;
-
     public Pedido() {
         this.estado = new PedidoAbertoState();
     }
+    private boolean pago=false;
 
     public int getId()        { return id; }
     public void setId(int id) { this.id = id; }
@@ -38,11 +38,11 @@ public class Pedido {
         return itens.stream().mapToDouble(ItemPedido::calcularSubtotal).sum();
     }
     
-    public void pagar(double valor) {
+    public void pagar() {
         if (pagamento == null)
             throw new IllegalStateException("Defina uma forma de pagamento antes!");
 
-        pagamento.pagar(valor);
+        pagamento.pagar(calcularTotal());
 
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
 
@@ -50,6 +50,8 @@ public class Pedido {
             String nome = itemPedido.getItem().getNome();
             estoque.baixarEstoque(nome, itemPedido.getQuantidade());
         }
+
+        this.pago=true;
     }
 
     public EstadoPedido getEstado() {
@@ -71,4 +73,19 @@ public class Pedido {
     public void cancelar() {
         estado.cancelar(this);
     }
+
+    // USADO NOS CONTROLLERS
+
+    public boolean isPago(){return this.pago;}
+    public void setPago(boolean b) {this.pago=b;}
+
+    public String getDescricaoResumida() {
+        StringBuilder descricao= new StringBuilder();
+        for (ItemPedido pedido : itens){
+            descricao.append(pedido.toString()).append("\n");
+        }
+        return descricao.toString();
+    }
+
+    public Object getPagamento() { return pagamento;}
 }

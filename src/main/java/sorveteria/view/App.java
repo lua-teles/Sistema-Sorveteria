@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import sorveteria.banco.IngredienteDAO;
 import sorveteria.banco.PedidoDAO;
 import sorveteria.facade.SorveteriaFacade;
 import sorveteria.observer.PedidoManagerSubject;
@@ -17,9 +18,10 @@ public class App extends Application {
 
         PedidoManagerSubject managerSubject = new PedidoManagerSubject();
         PedidoDAO pedidoDAO = new PedidoDAO();
-        SorveteriaFacade facade=new SorveteriaFacade(managerSubject,pedidoDAO);
+        IngredienteDAO ingredienteDAO = new IngredienteDAO();
+        SorveteriaFacade facade=new SorveteriaFacade(managerSubject,pedidoDAO,ingredienteDAO);
 
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sorveteria/view/controller/main.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
 
@@ -30,7 +32,7 @@ public class App extends Application {
         stage.setMinWidth(900);
         stage.setMinHeight(600);
         scene.getStylesheets().add(
-                getClass().getResource("styles.css").toExternalForm()
+                getClass().getResource("/sorveteria/view/controller/styles.css").toExternalForm()
         );
 
         stage.show();

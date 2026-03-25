@@ -11,7 +11,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import sorveteria.facade.SorveteriaFacade;
+import sorveteria.model.ItemPedido;
 import sorveteria.model.Pedido;
+import sorveteria.strategy.PagamentoCartao;
+import sorveteria.strategy.PagamentoDinheiro;
+import sorveteria.strategy.PagamentoPix;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -81,11 +85,7 @@ public class PagamentoController  implements Initializable, FacadeAware {
         painelTroco.setVisible(ehDinheiro);
         painelTroco.setManaged(ehDinheiro);
 
-        // desconto de 5% apenas no Pix?
-        double valorFinal = radioPix.isSelected()
-                ? valorOriginal * (1 - DESCONTO_PIX)
-                : valorOriginal;
-        totalComDesconto.setText(fmt(valorFinal));
+        totalComDesconto.setText(fmt(valorOriginal));
 
         btnConfirmarPagamento.setDisable(false);
     }
@@ -114,9 +114,10 @@ public class PagamentoController  implements Initializable, FacadeAware {
     -marca o pedido como pago e fecha o diálogo.
     */
     @FXML public void confirmarPagamento(ActionEvent e) {
+
         if (radioPix.isSelected()) {
-            // Facade aplica o desconto de 5% internamente
-            facade.processarPagamentoComDesconto(pedidoAtual, new PagamentoPix(), DESCONTO_PIX);
+            // facade aplica o desconto de 5% internamente
+            facade.processarPagamento(pedidoAtual, new PagamentoPix());
         } else if (radioCartao.isSelected()) {
             facade.processarPagamento(pedidoAtual, new PagamentoCartao());
         } else {
