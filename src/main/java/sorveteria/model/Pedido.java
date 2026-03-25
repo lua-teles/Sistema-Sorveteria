@@ -1,13 +1,13 @@
 package sorveteria.model;
 
 import sorveteria.banco.EstoqueManagerSingleton;
+import sorveteria.composite.ProdutoComposite;
 import sorveteria.state.EstadoPedido;
 import sorveteria.state.PedidoAbertoState;
 import sorveteria.strategy.PagamentoStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Pedido {
     private int id;
@@ -37,7 +37,7 @@ public class Pedido {
     public double calcularTotal() {
         return itens.stream().mapToDouble(ItemPedido::calcularSubtotal).sum();
     }
-    
+
     public void pagar(double valor) {
         if (pagamento == null)
             throw new IllegalStateException("Defina uma forma de pagamento antes!");
@@ -47,8 +47,12 @@ public class Pedido {
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
 
         for (ItemPedido itemPedido : itens) {
-            String nome = itemPedido.getItem().getNome();
-            estoque.baixarEstoque(nome, itemPedido.getQuantidade());
+            // Pega o produto (que é um ProdutoComposite)
+            ProdutoComposite sorvete = (ProdutoComposite) itemPedido.getItem();
+            // Pega o sabor do sorvete
+            String sabor = sorvete.getSabor();
+            // Dá baixa no estoque usando o sabor
+            estoque.baixarEstoque(sabor, itemPedido.getQuantidade());
         }
     }
 
