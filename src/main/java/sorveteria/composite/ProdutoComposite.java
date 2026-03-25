@@ -3,6 +3,8 @@ package sorveteria.composite;
 import java.util.ArrayList;
 import java.util.List;
 
+// COMPOSITE — representa um sorvete que pode ter vários extras
+// O preço final = preço base + soma de todos os extras
 public class ProdutoComposite implements ProdutoComponent {
     private final String nome;
     private final String sabor;
@@ -19,12 +21,19 @@ public class ProdutoComposite implements ProdutoComponent {
     public void removeComponente(ProdutoComponent c) { componentes.remove(c); }
     public List<ProdutoComponent> getComponentes()   { return componentes; }
 
+    // 🔥 CORREÇÃO: agora retorna apenas o sabor (igual ao estoque)
     @Override
-    public String getNome() { return nome + " sabor " + sabor; }
+    public String getNome() {
+        return sabor;
+    }
+
+    // 👉 Getter do sabor (boa prática)
+    public String getSabor() {
+        return sabor;
+    }
 
     @Override
     public double getPreco() {
-        // Soma preço base + preço de cada extra
         double total = precoBase;
         for (ProdutoComponent c : componentes) {
             total += c.getPreco();

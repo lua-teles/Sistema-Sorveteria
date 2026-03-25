@@ -9,11 +9,10 @@ import java.util.List;
 public class Pedido {
     private int id;
     private final List<ItemPedido> itens = new ArrayList<>();
-    private PagamentoStrategy pagamento; // Strategy
+    private PagamentoStrategy pagamento;
 
     public Pedido() {}
 
-    // ── getters/setters esperados pelo PedidoDAO da colega ──
     public int getId()        { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -29,17 +28,17 @@ public class Pedido {
         return itens.stream().mapToDouble(ItemPedido::calcularSubtotal).sum();
     }
 
-    // Paga e baixa estoque automaticamente
+    // 🔥 Paga e baixa estoque corretamente
     public void pagar(double valor) {
         if (pagamento == null)
             throw new IllegalStateException("Defina uma forma de pagamento antes!");
 
-        pagamento.pagar(valor); // Strategy em ação
+        pagamento.pagar(valor);
 
-        // Baixa estoque no banco para cada item
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
+
         for (ItemPedido itemPedido : itens) {
-            String nome = itemPedido.getItem().getNome();
+            String nome = itemPedido.getItem().getNome(); // agora retorna "Chocolate"
             estoque.baixarEstoque(nome, itemPedido.getQuantidade());
         }
     }
