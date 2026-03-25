@@ -41,7 +41,6 @@ public class SorveteriaFacade {
     public void adicionarItem(Pedido pedido, ItemPedido item) {
         pedido.addItem(item);
         pedidoManager.notifyObservers(pedido);
-        pedidoDAO.salvar(pedido);
 
         System.out.println("[FACADE] Item adicionado ao pedido ID: " + pedido.getId());
     }

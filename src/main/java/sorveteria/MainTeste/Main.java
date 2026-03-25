@@ -1,4 +1,4 @@
-package sorveteria;
+package sorveteria.MainTeste;
 
 import sorveteria.banco.DataBaseConnectionSingleton;
 import sorveteria.banco.EstoqueManagerSingleton;

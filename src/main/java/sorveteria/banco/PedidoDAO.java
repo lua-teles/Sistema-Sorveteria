@@ -14,7 +14,7 @@ public class PedidoDAO {
     }
 
     public void salvar(Pedido pedido){
-        String sql = "INSERT INTO pedido (status,total) VALUES (7,7) RETURNING id";
+        String sql = "INSERT INTO pedido (status,total) VALUES (?,?) RETURNING id";
 
         try(PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1, "ABERTO");
