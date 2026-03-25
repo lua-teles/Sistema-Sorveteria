@@ -8,17 +8,17 @@ import sorveteria.strategy.PagamentoStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Pedido {
     private int id;
     private final List<ItemPedido> itens = new ArrayList<>();
-    private PagamentoStrategy pagamento; // Strategy
+    private PagamentoStrategy pagamento;
     private EstadoPedido estado;
 
     public Pedido() {
         this.estado = new PedidoAbertoState();
     }
 
-    // ── getters/setters esperados pelo PedidoDAO da colega ──
     public int getId()        { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -26,6 +26,7 @@ public class Pedido {
         estado.adicionarItem(this);
         itens.add(item);
     }
+
     public void removeItem(ItemPedido item) { itens.remove(item); }
     public List<ItemPedido> getItens()      { return itens; }
 
@@ -36,16 +37,15 @@ public class Pedido {
     public double calcularTotal() {
         return itens.stream().mapToDouble(ItemPedido::calcularSubtotal).sum();
     }
-
-    // Paga e baixa estoque automaticamente
+    
     public void pagar(double valor) {
         if (pagamento == null)
             throw new IllegalStateException("Defina uma forma de pagamento antes!");
 
-        pagamento.pagar(valor); // Strategy em ação
+        pagamento.pagar(valor);
 
-        // Baixa estoque no banco para cada item
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
+
         for (ItemPedido itemPedido : itens) {
             String nome = itemPedido.getItem().getNome();
             estoque.baixarEstoque(nome, itemPedido.getQuantidade());
@@ -71,5 +71,4 @@ public class Pedido {
     public void cancelar() {
         estado.cancelar(this);
     }
-
 }
