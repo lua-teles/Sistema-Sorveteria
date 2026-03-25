@@ -1,6 +1,8 @@
 package sorveteria.model;
 
 import sorveteria.banco.EstoqueManagerSingleton;
+import sorveteria.state.EstadoPedido;
+import sorveteria.state.PedidoAbertoState;
 import sorveteria.strategy.PagamentoStrategy;
 
 import java.util.ArrayList;
@@ -10,14 +12,20 @@ public class Pedido {
     private int id;
     private final List<ItemPedido> itens = new ArrayList<>();
     private PagamentoStrategy pagamento; // Strategy
+    private EstadoPedido estado;
 
-    public Pedido() {}
+    public Pedido() {
+        this.estado = new PedidoAbertoState();
+    }
 
     // ── getters/setters esperados pelo PedidoDAO da colega ──
     public int getId()        { return id; }
     public void setId(int id) { this.id = id; }
 
-    public void addItem(ItemPedido item)    { itens.add(item); }
+    public void addItem(ItemPedido item) {
+        estado.adicionarItem(this);
+        itens.add(item);
+    }
     public void removeItem(ItemPedido item) { itens.remove(item); }
     public List<ItemPedido> getItens()      { return itens; }
 
@@ -43,4 +51,25 @@ public class Pedido {
             estoque.baixarEstoque(nome, itemPedido.getQuantidade());
         }
     }
+
+    public EstadoPedido getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EstadoPedido estado) {
+        this.estado = estado;
+    }
+
+    public void iniciarPreparo() {
+        estado.iniciarPreparo(this);
+    }
+
+    public void finalizar() {
+        estado.finalizar(this);
+    }
+
+    public void cancelar() {
+        estado.cancelar(this);
+    }
+
 }
