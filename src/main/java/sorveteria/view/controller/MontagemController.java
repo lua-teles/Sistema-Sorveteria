@@ -134,7 +134,7 @@ public class MontagemController implements Initializable{
     @FXML private void abrirPagamento(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("paagamento.fxml"));
+                    getClass().getResource("pagamento.fxml"));
             Parent root = loader.load();
 
             PagamentoController ctrl = loader.getController();

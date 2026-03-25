@@ -1,6 +1,9 @@
 package sorveteria.banco;
 
 import sorveteria.model.Pedido;
+import sorveteria.state.PedidoAbertoState;
+import sorveteria.state.PedidoFinalizadoState;
+import sorveteria.state.PedidoPreparoState;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,6 +44,14 @@ public class PedidoDAO {
             if(rs.next()){
                 Pedido pedido = new Pedido();
                 pedido.setId(rs.getInt("id"));
+                // carregar status do banco
+                String status = rs.getString("status");
+
+                switch (status) {
+                    case "ABERTO" -> pedido.setEstado(new PedidoAbertoState());
+                    case "PREPARO" -> pedido.setEstado(new PedidoPreparoState());
+                    case "FINALIZADO" -> pedido.setEstado(new PedidoFinalizadoState());
+                }
 
                 return pedido;
             }
@@ -62,6 +73,14 @@ public class PedidoDAO {
             while (rs.next()) {
                 Pedido p = new Pedido();
                 p.setId(rs.getInt("id"));
+                // carregar status do banco
+                String status = rs.getString("status");
+
+                switch (status) {
+                    case "ABERTO" -> p.setEstado(new PedidoAbertoState());
+                    case "PREPARO" -> p.setEstado(new PedidoPreparoState());
+                    case "FINALIZADO" -> p.setEstado(new PedidoFinalizadoState());
+                }
                 lista.add(p);
             }
         } catch (SQLException e) {

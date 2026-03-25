@@ -39,14 +39,15 @@ public class SorveteriaFacade {
         return pedidoDAO;
     }
     public List<Pedido> getPedidos() {
-        return pedidoManager.getPedidos();
+        return pedidoDAO.listarPedidos();
     }
 
     public Pedido criarPedido() {
         Pedido pedido = new Pedido();
 
-        pedidoManager.addPedido(pedido);
         pedidoDAO.salvar(pedido);
+        pedidoManager.addPedido(pedido);
+
 
         System.out.println("[FACADE] Pedido criado - ID: " + pedido.getId());
         return pedido;
@@ -98,5 +99,8 @@ public class SorveteriaFacade {
     public void processarPagamento(Pedido pedido, PagamentoStrategy pagamentoStrategy){
         pedido.setPagamento(pagamentoStrategy);
         pedido.pagar();
+
+        pedidoManager.notifyObservers(pedido);
+        pedidoDAO.atualizarStatus(pedido.getId(), "FINALIZADO");
     }
 }

@@ -32,4 +32,5 @@ public class PedidoManagerSubject {
     public List<Pedido> getPedidos() {
         return pedidos;
     }
+
 }

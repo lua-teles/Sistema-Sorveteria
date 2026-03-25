@@ -50,6 +50,7 @@ public class PedidosController implements Initializable, Observer {
     public void initialize(URL url, ResourceBundle rb) {
         configurarColunas();
         tabelaPedidos.setItems(pedidos);
+        recarregar();
     }
 
     //permite que o MainController passe uma referência de si mesmo
