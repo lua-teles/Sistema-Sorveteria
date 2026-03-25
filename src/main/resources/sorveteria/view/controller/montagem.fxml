@@ -22,7 +22,7 @@
                             <HBox alignment="CENTER_LEFT" prefHeight="17.0" prefWidth="318.0" spacing="12">
                                 <Label styleClass="titulo" text="Monte o Sorvete" />
                                 <Label fx:id="labelNumeroPedido" styleClass="badgePreparo" text="Pedido #001" />
-                        <Label fx:id="labelStatus" prefHeight="17.0" prefWidth="38.0" text="Status" />
+                        <Label fx:id="labelStatus" prefHeight="17.0" prefWidth="38.0" />
                             </HBox>
                             <VBox styleClass="secao">
                                 <Label styleClass="subtitulo" text="1. Base" />

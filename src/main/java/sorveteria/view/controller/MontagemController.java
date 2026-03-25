@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  NÃO instancia DAOs, strategies nem manipula estados de pedido diretamente
  */
 
-public class MontagemController implements Initializable, FacadeAware {
+public class MontagemController implements Initializable{
 
     @FXML private Label   labelNumeroPedido;
     @FXML private Label   resumoBase, resumoSabor, resumoExtras;
@@ -44,7 +44,7 @@ public class MontagemController implements Initializable, FacadeAware {
     private Button btnSaborSelecionado = null;
     private final Set<Adicional> adicionaisSelecionados = EnumSet.noneOf(Adicional.class);
 
-    private SorveteriaFacade facade;
+    private final SorveteriaFacade facade=SorveteriaFacade.getInstance(null,null,null);
     private MainController mainController;
     private Pedido pedidoAtual;
 
@@ -53,18 +53,14 @@ public class MontagemController implements Initializable, FacadeAware {
     public void initialize(URL url, ResourceBundle rb) {
         atualizarResumo();
         btnFinalizarPedido.setDisable(true);
-    }
-
-    @Override
-    public void setFacade(SorveteriaFacade facade) {
-        this.facade = facade;
+        System.out.println("facade: "+ this.facade);
     }
 
     public void setPedido(Pedido pedido) {
         this.pedidoAtual = pedido;
         labelNumeroPedido.setText("Pedido #" + String.format("%03d", pedido.getId()));
         //habilita finalizar se o pedido já tiver itens (reaberto para edição)
-        //btnFinalizarPedido.setDisable(pedido.getItens().isEmpty());
+        btnFinalizarPedido.setDisable(pedido.getItens().isEmpty());
     }
 
     //referência ao MainController para navegação após pagamento
@@ -130,6 +126,7 @@ public class MontagemController implements Initializable, FacadeAware {
 
         exibirStatus("Item adicionado: " + nomeItem);
         btnFinalizarPedido.setDisable(false);
+        System.out.println(btnFinalizarPedido.disabledProperty());
         limparSelecao();
     }
 
@@ -141,7 +138,6 @@ public class MontagemController implements Initializable, FacadeAware {
             Parent root = loader.load();
 
             PagamentoController ctrl = loader.getController();
-            ctrl.setFacade(facade);
             ctrl.setPedido(pedidoAtual); // abre o dialog de pagamento passando o pedido atual
 
             Stage dialog = new Stage();

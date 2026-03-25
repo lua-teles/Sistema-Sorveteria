@@ -32,7 +32,7 @@ controller da tela de listagem de pedidos:pedidos.fxml
 recebe a facade injetada pelo MainController.
  */
 
-public class PedidosController implements Initializable, Observer, FacadeAware {
+public class PedidosController implements Initializable, Observer {
 
     @FXML private TableView<Pedido> tabelaPedidos;
     @FXML private TableColumn<Pedido, String> colId, colDescricao, colStatus, colPagamento, colTotal;
@@ -42,7 +42,7 @@ public class PedidosController implements Initializable, Observer, FacadeAware {
     //lista observável que alimenta a TableView
     private ObservableList<Pedido> pedidos = FXCollections.observableArrayList();
 
-    private SorveteriaFacade facade;
+    private final SorveteriaFacade facade = SorveteriaFacade.getInstance(null,null,null);;
     private MainController   mainController;
 
     // ---------------------------------INICIALIAZAÇÃO ---------------------------------
@@ -52,13 +52,6 @@ public class PedidosController implements Initializable, Observer, FacadeAware {
         tabelaPedidos.setItems(pedidos);
     }
 
-    //recebe a facade  pelo MainController e carrega os dados iniciais
-    @Override
-    public void setFacade(SorveteriaFacade facade) {
-        this.facade = facade;
-        this.mainController = null; // será injetado separadamente se necessário
-        recarregar();
-    }
     //permite que o MainController passe uma referência de si mesmo
     public void setMainController(MainController mc) {
         this.mainController = mc;

@@ -30,7 +30,7 @@ responsabilidades:
 NAO baixa estoque diretamente isso é feito dentro de Pedido.pagar() que é chamado pelo Facade.
  */
 
-public class PagamentoController  implements Initializable, FacadeAware {
+public class PagamentoController  implements Initializable {
     @FXML
     private Label dialogNumeroPedido, dialogTotal, dialogItens, totalComDesconto, labelTroco;
     @FXML private RadioButton radioPix, radioCartao, radioDinheiro;
@@ -38,7 +38,7 @@ public class PagamentoController  implements Initializable, FacadeAware {
     @FXML private TextField campoTroco;
     @FXML private Button btnConfirmarPagamento;
 
-    private SorveteriaFacade facade;
+    private final SorveteriaFacade facade= SorveteriaFacade.getInstance(null,null,null);;
     private Pedido pedidoAtual;
     private double valorOriginal;
 
@@ -47,10 +47,6 @@ public class PagamentoController  implements Initializable, FacadeAware {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnConfirmarPagamento.setDisable(true);
-    }
-    @Override
-    public void setFacade(SorveteriaFacade facade) {
-        this.facade = facade;
     }
 
     // ---------------------------------TEXTOS ---------------------------------

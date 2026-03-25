@@ -9,17 +9,20 @@ import sorveteria.banco.IngredienteDAO;
 import sorveteria.banco.PedidoDAO;
 import sorveteria.facade.SorveteriaFacade;
 import sorveteria.observer.PedidoManagerSubject;
+import sorveteria.view.controller.MainController;
 
 import java.io.IOException;
 
 public class App extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
 
         PedidoManagerSubject managerSubject = new PedidoManagerSubject();
         PedidoDAO pedidoDAO = new PedidoDAO();
         IngredienteDAO ingredienteDAO = new IngredienteDAO();
-        SorveteriaFacade facade=new SorveteriaFacade(managerSubject,pedidoDAO,ingredienteDAO);
+        SorveteriaFacade facade= SorveteriaFacade.getInstance(managerSubject,pedidoDAO,ingredienteDAO);
+
+        MainController mainController = new MainController();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sorveteria/view/controller/main.fxml"));
 

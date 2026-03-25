@@ -25,23 +25,24 @@ controller da tela de preparo kanban (preparo.fxml).
  - a mudança de estado (ABERTO EM_PREPARO FINALIZADO) é sempre
    delegada ao Facade o controller não manipula o estado diretamente.
  */
-public class PreparoController implements Initializable, Observer, FacadeAware {
+public class PreparoController implements Initializable, Observer {
 
     @FXML private VBox  listaAguardando, listaEmPreparo, listaPronto;
     @FXML private Label countAguardando, countEmPreparo, countPronto;
 
-    private SorveteriaFacade facade;
+    private final SorveteriaFacade facade=SorveteriaFacade.getInstance(null,null,null);;
 
     // ---------------------------------INICIALIAZAÇÃO ---------------------------------
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // dados carregados após injeção da facade em setFacade()
     }
-    @Override
+    /*@Override
     public void setFacade(SorveteriaFacade facade) {
         this.facade = facade;
         recarregar();
     }
+     */
 
     // ---------------------------------OBSERVER---------------------------------
 

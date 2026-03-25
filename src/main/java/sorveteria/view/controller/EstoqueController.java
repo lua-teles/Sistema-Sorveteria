@@ -32,7 +32,7 @@ responsabilidades:
 toda gravação de estoque é feita via Facade, o controller não chama IngredienteDAO diretamente.
  */
 
-public class EstoqueController implements Initializable, FacadeAware {
+public class EstoqueController implements Initializable {
 
     private static final int LIMITE_BAIXO = 5;
 
@@ -44,7 +44,7 @@ public class EstoqueController implements Initializable, FacadeAware {
     @FXML private HBox painelAlertas;
     @FXML private Label labelAlertas;
 
-    private SorveteriaFacade facade;
+    private SorveteriaFacade facade = SorveteriaFacade.getInstance(null,null,null);
 
     //lista completa, usada como base para o filtro de busca. */
     private ObservableList<Ingrediente> listaCompleta;
@@ -56,11 +56,6 @@ public class EstoqueController implements Initializable, FacadeAware {
         configurarColunas();
         // filtro ao vivo aplica busca a cada tecla digitada
         campoBusca.textProperty().addListener((obs, antigo, novo) -> aplicarFiltro(novo));
-    }
-    @Override
-    public void setFacade(SorveteriaFacade facade) {
-        this.facade = facade;
-        carregarIngredientes();
     }
 
     // --------------------------------- HANDLERS ---------------------------------

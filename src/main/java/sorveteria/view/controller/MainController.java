@@ -25,16 +25,9 @@ public class MainController {
     private StackPane container;
 
     //istância única da facade compartilhada com todos os controllers
-    private SorveteriaFacade facade;
+    private SorveteriaFacade facade=SorveteriaFacade.getInstance(null,null,null);
 
     public void initialize() throws Exception {
-        carregarTela("pedidos.fxml");
-    }
-
-    // chamado pela classe App(MAin) logo após carregar main.fxml
-    public void setFacade(SorveteriaFacade facade) throws Exception {
-        this.facade = facade;
-        // garante que a tela inicial já receba a facade
         carregarTela("pedidos.fxml");
     }
 
@@ -44,10 +37,13 @@ public class MainController {
                     getClass().getResource("/sorveteria/view/controller/"+fxml));
             container.getChildren().setAll((Node) loader.load());
             Object ctrl = loader.getController();
-            // facade em qualquer controller que a declare
-            if (ctrl instanceof FacadeAware fa) {
-                fa.setFacade(facade);
+            try {
+                var method = ctrl.getClass().getMethod("setMainController", MainController.class);
+                method.invoke(ctrl, this);
+            } catch (NoSuchMethodException ignored) {
+                // Se o controller não tiver setMainController, ignora
             }
+
             // registra como observer no PedidoManagerSubject quando aplicável
             if (ctrl instanceof Observer obs && facade != null) {
                 facade.getPedidoManager().addObserver(obs);
@@ -67,9 +63,9 @@ public class MainController {
             container.getChildren().setAll((Node) loader.load());
 
             MontagemController ctrl = loader.getController();
-            ctrl.setFacade(facade);
             ctrl.setMainController(this);
             ctrl.setPedido(pedido);
+            System.out.println("Setando montagem com pedido" + pedido);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,6 +82,7 @@ public class MainController {
     public void irEstoque() throws Exception {carregarTela("estoque.fxml");}
     @FXML public void novoPedido() {
         Pedido pedido = facade.criarPedido();
+
         carregarMontagem(pedido);
     }
 

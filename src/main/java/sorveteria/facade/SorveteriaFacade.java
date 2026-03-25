@@ -12,14 +12,23 @@ import java.util.List;
 
 public class SorveteriaFacade {
 
+    private static SorveteriaFacade instancia;
+
     private final PedidoManagerSubject pedidoManager;
     private final PedidoDAO            pedidoDAO;
     private final IngredienteDAO ingredienteDAO;
 
-    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
+    private SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
         this.pedidoManager = pedidoManager;
         this.pedidoDAO     = pedidoDAO;
         this.ingredienteDAO = ingredienteDAO;
+    }
+
+    public static SorveteriaFacade getInstance(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
+        if (instancia == null) {
+            instancia = new SorveteriaFacade(pedidoManager, pedidoDAO, ingredienteDAO);
+        }
+        return instancia;
     }
 
     public PedidoManagerSubject getPedidoManager() {
