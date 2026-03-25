@@ -5,6 +5,8 @@ import sorveteria.model.ItemPedido;
 import sorveteria.model.Pedido;
 import sorveteria.observer.PedidoManagerSubject;
 
+import java.util.List;
+
 public class SorveteriaFacade {
 
     private final PedidoManagerSubject pedidoManager;
@@ -13,6 +15,17 @@ public class SorveteriaFacade {
     public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO) {
         this.pedidoManager = pedidoManager;
         this.pedidoDAO     = pedidoDAO;
+    }
+
+    public PedidoManagerSubject getPedidoManager() {
+        return pedidoManager;
+    }
+
+    public PedidoDAO getPedidoDAO() {
+        return pedidoDAO;
+    }
+    public List<Pedido> getPedidos() {
+        return pedidoManager.getPedidos();
     }
 
     public Pedido criarPedido() {
@@ -48,7 +61,6 @@ public class SorveteriaFacade {
 
         System.out.println("[FACADE] Pedido finalizado - ID: " + pedido.getId());
     }
-
 
     public void cancelarPedido(Pedido pedido) {
         pedido.cancelar();
