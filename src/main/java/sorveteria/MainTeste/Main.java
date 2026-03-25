@@ -68,6 +68,6 @@ public class Main {
 
         // === FINALIZAÇÃO ===
         banco.fechar();
-        System.out.println("\n✅ Todos os testes concluídos com sucesso!");
+        System.out.println("\n Todos os testes concluídos com sucesso!");
     }
 }
