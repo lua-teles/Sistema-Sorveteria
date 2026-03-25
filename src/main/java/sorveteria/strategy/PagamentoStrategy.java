@@ -1,4 +1,5 @@
 package sorveteria.strategy;
 
-public class PagamentoStrategy {
+public interface PagamentoStrategy {
+    void pagar(double valor);
 }

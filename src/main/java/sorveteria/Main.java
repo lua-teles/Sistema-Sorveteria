@@ -3,6 +3,11 @@ package sorveteria;
 import sorveteria.banco.DataBaseConnectionSingleton;
 import sorveteria.banco.EstoqueManagerSingleton;
 import sorveteria.banco.IngredienteDAO;
+import sorveteria.composite.ExtraLeaf;
+import sorveteria.composite.ProdutoComposite;
+import sorveteria.model.Pedido;
+import sorveteria.strategy.PagamentoPix;
+import sorveteria.model.ItemPedido;
 
 import java.sql.Connection;
 
@@ -28,6 +33,23 @@ public class Main {
         System.out.println("=== TESTE BAIXA DE ESTOQUE ===");
         estoque.baixarEstoque("Chocolate", 2);
         System.out.println("Chocolate após baixa: " + estoque.verificarEstoque("Chocolate"));
+
+        // === TESTE COMPOSITE ===
+        System.out.println("\n=== TESTE COMPOSITE ===");
+        ProdutoComposite sorvete = new ProdutoComposite("Sorvete", "Chocolate", 8.00);
+        sorvete.addComponente(new ExtraLeaf("Granola", 2.00));
+        sorvete.addComponente(new ExtraLeaf("Calda de Chocolate", 1.50));
+        System.out.println("Produto: " + sorvete.getNome());
+        System.out.printf("Preco total: R$ %.2f%n", sorvete.getPreco());
+
+        // === TESTE STRATEGY ===
+        System.out.println("\n=== TESTE STRATEGY ===");
+        Pedido pedido = new Pedido();
+        pedido.addItem(new ItemPedido(1, sorvete));
+        pedido.setPagamento(new PagamentoPix());
+        System.out.printf("Total do pedido: R$ %.2f%n", pedido.calcularTotal());
+        pedido.pagar(pedido.calcularTotal());
+
 
         // 5. Fecha conexão
         banco.fechar();
