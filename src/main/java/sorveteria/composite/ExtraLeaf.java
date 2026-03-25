@@ -1,6 +1,7 @@
 package sorveteria.composite;
 
 public class ExtraLeaf implements ProdutoComponent {
+
     private final String nome;
     private final double preco;
 
@@ -9,12 +10,6 @@ public class ExtraLeaf implements ProdutoComponent {
         this.preco = preco;
     }
 
-    @Override
-    public String getNome() {
-        return nome;
-    }
-    @Override
-    public double getPreco() {
-        return preco;
-    }
+    @Override public String getNome()  { return nome; }
+    @Override public double getPreco() { return preco; }
 }

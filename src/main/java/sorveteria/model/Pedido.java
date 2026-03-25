@@ -1,6 +1,7 @@
 package sorveteria.model;
 
 import sorveteria.banco.EstoqueManagerSingleton;
+import sorveteria.composite.ProdutoComposite;
 import sorveteria.state.EstadoPedido;
 import sorveteria.state.PedidoAbertoState;
 import sorveteria.strategy.PagamentoStrategy;
@@ -14,6 +15,10 @@ public class Pedido {
     private final List<ItemPedido> itens = new ArrayList<>();
     private PagamentoStrategy pagamento;
     private EstadoPedido estado;
+    private String observacao = "";
+    public void setObservacao(String obs) { this.observacao = obs; }
+    public String getObservacao()         { return observacao; }
+
     public Pedido() {
         this.estado = new PedidoAbertoState();
     }
@@ -47,8 +52,12 @@ public class Pedido {
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
 
         for (ItemPedido itemPedido : itens) {
-            String nome = itemPedido.getItem().getNome();
-            estoque.baixarEstoque(nome, itemPedido.getQuantidade());
+            // Pega o produto (que é um ProdutoComposite)
+            ProdutoComposite sorvete = (ProdutoComposite) itemPedido.getItem();
+            // Pega o sabor do sorvete
+            String sabor = sorvete.getSabor();
+            // Dá baixa no estoque usando o sabor
+            estoque.baixarEstoque(sabor, itemPedido.getQuantidade());
         }
 
         this.pago=true;

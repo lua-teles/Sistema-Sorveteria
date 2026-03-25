@@ -18,7 +18,7 @@ public class SorveteriaFacade {
     private final PedidoDAO            pedidoDAO;
     private final IngredienteDAO ingredienteDAO;
 
-    private SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
+    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO) {
         this.pedidoManager = pedidoManager;
         this.pedidoDAO     = pedidoDAO;
         this.ingredienteDAO = ingredienteDAO;
@@ -59,6 +59,15 @@ public class SorveteriaFacade {
         pedidoDAO.salvar(pedido);
 
         System.out.println("[FACADE] Item adicionado ao pedido ID: " + pedido.getId());
+    }
+
+    // NOVO: registra observação no pedido e notifica observers
+    public void adicionarObservacao(Pedido pedido, String obs) {
+        if (obs != null && !obs.isBlank()) {
+            pedido.setObservacao(obs);
+            pedidoManager.notifyObservers(pedido);
+            System.out.println("[FACADE] Observação registrada no pedido ID: " + pedido.getId());
+        }
     }
 
     public void iniciarPreparo(Pedido pedido) {

@@ -14,7 +14,7 @@ public class IngredienteDAO {
     }
 
     public Ingrediente buscaPorNome(String nome){
-        String sql = "SELECT * FROM ingrediente WHERE nome = ?";
+        String sql = "SELECT * FROM ingrediente WHERE LOWER(nome) = LOWER(?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)){
             stmt.setString(1, nome);
             ResultSet rs = stmt.executeQuery();
@@ -30,7 +30,6 @@ public class IngredienteDAO {
             throw new RuntimeException("Erro ao buscar ingrediente: "+e.getMessage(),e);
         }
         return null;
-
     }
     public void atualizarQuantidade(Ingrediente ingrediente){
         String sql = "UPDATE ingrediente SET quantidade = ? WHERE id = ?";
