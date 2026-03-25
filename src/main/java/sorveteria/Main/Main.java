@@ -209,7 +209,7 @@ public class Main {
             facade.cancelarPedido(pedido);
             return;
         }
-        
+
         System.out.println("\nPedido pago! Iniciando o preparo...");
         facade.iniciarPreparo(pedido);
 
