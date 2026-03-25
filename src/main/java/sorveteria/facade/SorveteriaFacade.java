@@ -1,6 +1,8 @@
 package sorveteria.facade;
 
+import sorveteria.banco.IngredienteDAO;
 import sorveteria.banco.PedidoDAO;
+import sorveteria.model.Ingrediente;
 import sorveteria.model.ItemPedido;
 import sorveteria.model.Pedido;
 import sorveteria.observer.PedidoManagerSubject;
@@ -11,10 +13,12 @@ public class SorveteriaFacade {
 
     private final PedidoManagerSubject pedidoManager;
     private final PedidoDAO            pedidoDAO;
+    private final IngredienteDAO ingredienteDAO;
 
-    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO) {
+    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
         this.pedidoManager = pedidoManager;
         this.pedidoDAO     = pedidoDAO;
+        this.ingredienteDAO = ingredienteDAO;
     }
 
     public PedidoManagerSubject getPedidoManager() {
@@ -69,4 +73,15 @@ public class SorveteriaFacade {
 
         System.out.println("[FACADE] Pedido cancelado - ID: " + pedido.getId());
     }
+
+    public List<Ingrediente> listarIngredientes() {
+        return ingredienteDAO.listarTodos();
+    }
+
+    public void atualizarEstoque(Ingrediente ingrediente) {
+        ingredienteDAO.atualizarQuantidade(ingrediente);
+        System.out.println("[FACADE] Estoque atualizado: " + ingrediente.getNome() + " → " + ingrediente.getQuantidade());
+    }
+
+
 }

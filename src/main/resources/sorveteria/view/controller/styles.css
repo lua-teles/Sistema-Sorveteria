@@ -1,0 +1,600 @@
+/* ---------- RESET & ROOT ---------- */
+* {
+    -fx-font-family: 'Segoe UI', sans-serif;
+}
+.root {
+    -fx-background-color: #F7F4F0;
+    -fx-font-size: 14px;
+}
+
+/* ---------- TOPBAR / NAVEGAÇÃO ---------- */
+.topbar {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0 24 0 24;
+    -fx-spacing: 4;
+    -fx-min-height: 56px;
+    -fx-max-height: 56px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-color: #E8E2DA;
+    -fx-border-width: 0 0 2 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+.topbar-title {
+    -fx-text-fill: #C10E0E;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 20 0 4;
+}
+
+/* ---------- BOTÕES DE NAVEGAÇÃO ---------- */
+.navButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #6B6560;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 16 20 16 20;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 3 0;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+.navButton:hover {
+    -fx-background-color: #FFF0EA;
+    -fx-text-fill: #C10E0E;
+}
+
+.navButton-active {
+    -fx-background-color: transparent;
+    -fx-text-fill: #C10E0E;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 16 20 13 20;
+    -fx-cursor: hand;
+    -fx-border-color: transparent transparent #C10E0E transparent;
+    -fx-border-width: 0 0 3 0;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+/* ---------- CONTAINER PRINCIPAL ---------- */
+.mainContainer {
+    -fx-padding: 0;
+    -fx-spacing: 0;
+    -fx-background-color: #F7F4F0;
+}
+
+/* ---------- TÍTULOS E LABELS ---------- */
+.titulo {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D2926;
+    -fx-padding: 0 0 4 0;
+}
+
+.subtitulo {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6B6560;
+    -fx-padding: 0 0 8 0;
+    -fx-text-transform: uppercase;
+}
+
+.label-campo {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8A8480;
+    -fx-font-weight: bold;
+}
+
+/* ---------- SEÇÕES ---------- */
+.secao {
+    -fx-padding: 16 0 8 0;
+    -fx-spacing: 8;
+    -fx-border-color: transparent transparent #EDE8E2 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ---------- SCROLL AREA ---------- */
+.scrollArea {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scrollArea > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scrollArea .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+
+.scrollArea .scroll-bar:vertical .thumb {
+    -fx-background-color: #D4CFC9;
+    -fx-background-radius: 4;
+}
+
+.scrollArea .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+}
+
+.scrollArea .scroll-bar:vertical .increment-button,
+.scrollArea .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* ---------- ÁREA DE MONTAGEM ---------- */
+.montagemBox {
+    -fx-padding: 24 28 24 28;
+    -fx-spacing: 4;
+    -fx-background-color: #F7F4F0;
+}
+
+/* ---------- BOTÕES DE OPÇÃO (toggle) ---------- */
+.grupoOpcoes {
+    -fx-hgap: 8;
+    -fx-vgap: 8;
+}
+
+.botaoOpcao {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #3D3935;
+    -fx-font-size: 13px;
+    -fx-padding: 9 18 9 18;
+    -fx-background-radius: 20;
+    -fx-border-color: #D8D3CD;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 4, 0, 0, 1);
+}
+
+.botaoOpcao:hover {
+    -fx-background-color: #FFF5F0;
+    -fx-border-color: #E05340;
+    -fx-text-fill: #C10E0E;
+}
+
+.botaoOpcaoSelecionado {
+    -fx-background-color: #C10E0E;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 18 9 18;
+    -fx-background-radius: 20;
+    -fx-border-color: #C10E0E;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(193,68,14,0.3), 8, 0, 0, 2);
+}
+
+/* ---------- PAINEL DE RESUMO ---------- */
+.resumoBox {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 24 20 20 20;
+    -fx-spacing: 10;
+    -fx-border-color: #E8E2DA;
+    -fx-border-width: 0 0 0 1.5;
+}
+
+.resumoItem {
+    -fx-font-size: 13px;
+    -fx-text-fill: #5A5550;
+    -fx-padding: 3 0 3 0;
+}
+
+.resumoItemLabel {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8A8480;
+    -fx-font-weight: bold;
+}
+
+.resumoItemValor {
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D2926;
+    -fx-font-weight: bold;
+}
+
+.resumoSeparador {
+    -fx-border-color: #EDE8E2;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 4 0 0 0;
+}
+
+.preco {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #C10E0E;
+    -fx-padding: 8 0 4 0;
+}
+
+/* ---------- BOTÃO CONFIRMAR / PRIMÁRIO ---------- */
+.botaoConfirmar {
+    -fx-background-color: #C10E0E;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 13 0 13 0;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(193,68,14,0.35), 10, 0, 0, 3);
+}
+
+.botaoConfirmar:hover {
+    -fx-background-color: #A83A0C;
+}
+
+.botaoConfirmar:pressed {
+    -fx-background-color: #8E3009;
+    -fx-effect: dropshadow(gaussian, rgba(193,68,14,0.2), 4, 0, 0, 1);
+}
+
+/* ---------- BOTÃO SECUNDÁRIO ---------- */
+.botaoSecundario {
+    -fx-background-color: transparent;
+    -fx-text-fill: #C10E0E;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 10 0;
+    -fx-background-radius: 8;
+    -fx-border-color: #C10E0E;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.botaoSecundario:hover {
+    -fx-background-color: #FFF0EA;
+}
+
+/* ---------- BOTÃO PERIGO / CANCELAR ---------- */
+.botaoCancelar {
+    -fx-background-color: transparent;
+    -fx-text-fill: #C04040;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 16 10 16;
+    -fx-background-radius: 8;
+    -fx-border-color: #C04040;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 8;
+    -fx-cursor: hand;
+}
+
+.botaoCancelar:hover {
+    -fx-background-color: #FFF0F0;
+}
+
+/* ---------- TELA DE PEDIDOS ---------- */
+.pedidosContainer {
+    -fx-padding: 24 28 24 28;
+    -fx-spacing: 16;
+    -fx-background-color: #F7F4F0;
+}
+
+.pedidoCard {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 16 20 16 20;
+    -fx-spacing: 6;
+    -fx-background-radius: 10;
+    -fx-border-color: #E8E2DA;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 6, 0, 0, 2);
+}
+
+.pedidoCard:hover {
+    -fx-border-color: #C10E0E;
+    -fx-effect: dropshadow(gaussian, rgba(193,68,14,0.12), 10, 0, 0, 3);
+}
+
+.pedidoId {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8A8480;
+}
+
+.pedidoDescricao {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2D2926;
+}
+
+.pedidoValor {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #C10E0E;
+}
+
+/* ---------- BADGES DE STATUS ---------- */
+.badgeAberto {
+    -fx-background-color: #FFF3CD;
+    -fx-text-fill: #856404;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10 3 10;
+    -fx-background-radius: 12;
+}
+
+.badgePreparo {
+    -fx-background-color: #D1ECF1;
+    -fx-text-fill: #0C5460;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10 3 10;
+    -fx-background-radius: 12;
+}
+
+.badgePronto {
+    -fx-background-color: #D4EDDA;
+    -fx-text-fill: #155724;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10 3 10;
+    -fx-background-radius: 12;
+}
+
+.badgeCancelado {
+    -fx-background-color: #F8D7DA;
+    -fx-text-fill: #721C24;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 10 3 10;
+    -fx-background-radius: 12;
+}
+
+/* ---------- TELA DE PREPARO ---------- */
+.preparoContainer {
+    -fx-padding: 24 28 24 28;
+    -fx-spacing: 16;
+    -fx-background-color: #F7F4F0;
+}
+
+.colunaKanban {
+    -fx-background-color: #EFEBE5;
+    -fx-padding: 16 14 16 14;
+    -fx-spacing: 12;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-min-width: 240;
+    -fx-pref-width: 300;
+}
+
+.kanbanHeader {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6B6560;
+    -fx-padding: 0 0 8 0;
+}
+
+/* ---------- TELA DE ESTOQUE ---------- */
+.estoqueContainer {
+    -fx-padding: 24 28 24 28;
+    -fx-spacing: 16;
+    -fx-background-color: #F7F4F0;
+}
+
+.tabelaEstoque {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E8E2DA;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.tabelaEstoque .column-header-background {
+    -fx-background-color: #F0EBE4;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.tabelaEstoque .column-header .label {
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-text-fill: #6B6560;
+}
+
+.tabelaEstoque .table-row-cell {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent transparent #F0EBE4 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.tabelaEstoque .table-row-cell:odd {
+    -fx-background-color: #FDFAF7;
+}
+
+.tabelaEstoque .table-row-cell:selected {
+    -fx-background-color: #FFF0EA;
+}
+
+.tabelaEstoque .table-row-cell:selected .text {
+    -fx-fill: #2D2926;
+}
+
+.estoqueAlerta {
+    -fx-text-fill: #C04040;
+    -fx-font-weight: bold;
+}
+
+/* ---------- DIALOG DE PAGAMENTO ---------- */
+.dialogContainer {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 0;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 24, 0, 0, 8);
+}
+
+.dialogHeader {
+    -fx-background-color: #C10E0E;
+    -fx-padding: 20 28 20 28;
+    -fx-background-radius: 12 12 0 0;
+}
+
+.dialogTitulo {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+.dialogBody {
+    -fx-padding: 24 28 24 28;
+    -fx-spacing: 16;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 0 12 12;
+}
+
+.dialogTotalLabel {
+    -fx-font-size: 13px;
+    -fx-text-fill: #8A8480;
+    -fx-font-weight: bold;
+}
+
+.dialogTotalValor {
+    -fx-font-size: 30px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #C10E0E;
+}
+
+.dialogSeparador {
+    -fx-border-color: #EDE8E2;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 2 0 0 0;
+}
+
+.pagamentoLabel {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6B6560;
+    -fx-padding: 4 0 6 0;
+}
+
+.radioOpcao {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2D2926;
+    -fx-cursor: hand;
+}
+
+.radioOpcao .radio {
+    -fx-border-color: #C8C3BD;
+    -fx-border-width: 2;
+    -fx-border-radius: 50%;
+    -fx-background-radius: 50%;
+}
+
+.radioOpcao:selected .radio {
+    -fx-border-color: #C10E0E;
+}
+
+.radioOpcao:selected .dot {
+    -fx-background-color: #C10E0E;
+    -fx-background-radius: 50%;
+}
+
+.descontoInfo {
+    -fx-font-size: 11px;
+    -fx-text-fill: #5A9A5A;
+    -fx-font-style: italic;
+    -fx-padding: 0 0 0 22;
+}
+
+/* ---------- CAMPO DE TEXTO / TEXT FIELD ---------- */
+.textField {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D8D3CD;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2D2926;
+    -fx-prompt-text-fill: #B0AAA4;
+}
+
+.textField:focused {
+    -fx-border-color: #C10E0E;
+    -fx-background-color: #FFFCFB;
+}
+
+/* ---------- SPINNER / QUANTIDADE ---------- */
+.spinnerQtd {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #D8D3CD;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.spinnerQtd .increment-arrow-button,
+.spinnerQtd .decrement-arrow-button {
+    -fx-background-color: #F0EBE4;
+    -fx-border-color: #D8D3CD;
+}
+
+/* ---------- NOVO PEDIDO BUTTON (topbar) ---------- */
+.botaoNovoPedido {
+    -fx-background-color: #C10E0E;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-padding: 9 18 9 18;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+.botaoNovoPedido:hover {
+    -fx-background-color: #A83A0C;
+}
+
+/* ---------- SEPARATOR ---------- */
+.separador {
+    -fx-border-color: #EDE8E2;
+    -fx-border-width: 1 0 0 0;
+}
+
+/* ---------- PAINEL LATERAL (sidebar info) ---------- */
+.sideInfo {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 20 16 20 16;
+    -fx-spacing: 12;
+    -fx-border-color: #E8E2DA;
+    -fx-border-width: 0 0 0 1.5;
+    -fx-min-width: 200;
+    -fx-max-width: 200;
+}
+
+.sideInfoTitulo {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8A8480;
+    -fx-padding: 0 0 6 0;
+}
+
+/* ---------- EMPTY STATE ---------- */
+.emptyState {
+    -fx-alignment: CENTER;
+    -fx-padding: 48 0 48 0;
+}
+
+.emptyStateText {
+    -fx-font-size: 15px;
+    -fx-text-fill: #B0AAA4;
+}
+
+/* ---------- COUNTER BADGE ---------- */
+.counterBadge {
+    -fx-background-color: #C10E0E;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-min-width: 18;
+    -fx-min-height: 18;
+    -fx-background-radius: 9;
+    -fx-alignment: CENTER;
+    -fx-padding: 0 4 0 4;
+}

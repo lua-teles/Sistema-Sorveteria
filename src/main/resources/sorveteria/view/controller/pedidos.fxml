@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sorveteria.view.controller.PedidosController">
+    <fx:define>
+        <ToggleGroup fx:id="filtroGroup" />
+    </fx:define>
+    <children>
+        <VBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+            <HBox styleClass="mainContainer" VBox.vgrow="ALWAYS">
+                <VBox styleClass="pedidosContainer" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" spacing="16">
+                        <Label styleClass="titulo" text="Pedidos do Dia" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <ToggleButton fx:id="filtroTodos" onAction="#filtrarTodos" selected="true" styleClass="botaoOpcao" text="Todos">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="filtroGroup" />
+                     </toggleGroup></ToggleButton>
+                        <ToggleButton fx:id="filtroAbertos" onAction="#filtrarAbertos" styleClass="botaoOpcao" text="Abertos" toggleGroup="$filtroGroup" />
+                        <ToggleButton fx:id="filtroPreparo" onAction="#filtrarPreparo" styleClass="botaoOpcao" text="Em Preparo" toggleGroup="$filtroGroup" />
+                        <ToggleButton fx:id="filtroProntos" onAction="#filtrarProntos" styleClass="botaoOpcao" text="Prontos" toggleGroup="$filtroGroup" />
+                    </HBox>
+                    <TableView fx:id="tabelaPedidos" styleClass="tabelaEstoque" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colId" prefWidth="60" text="#" />
+                            <TableColumn fx:id="colDescricao" prefWidth="280" text="Descrição" />
+                            <TableColumn fx:id="colStatus" prefWidth="130" text="Status" />
+                            <TableColumn fx:id="colPagamento" prefWidth="110" text="Pagamento" />
+                            <TableColumn fx:id="colTotal" prefWidth="100" text="Total" />
+                            <TableColumn fx:id="colAcoes" prefWidth="180" text="Ações" />
+                        </columns>
+                        <placeholder>
+                            <VBox alignment="CENTER" spacing="8" styleClass="emptyState">
+                                <Label styleClass="emptyStateText" text="Nenhum pedido ainda." />
+                                <Label styleClass="emptyStateText" text="Clique em '+ Novo Pedido' para começar." />
+                            </VBox>
+                        </placeholder>
+                    </TableView>
+                </VBox>
+                <VBox minWidth="200" prefWidth="220" styleClass="resumoBox">
+                    <Label styleClass="titulo" text="Resumo do Dia" />
+                    <Separator styleClass="separador" />
+                    <VBox spacing="4">
+                        <Label styleClass="resumoItemLabel" text="PEDIDOS ABERTOS" />
+                        <Label fx:id="resumoDiaAbertos" styleClass="resumoItemValor" text="0" />
+                    </VBox>
+                    <VBox spacing="4">
+                        <Label styleClass="resumoItemLabel" text="EM PREPARO" />
+                        <Label fx:id="resumoDiaPreparo" styleClass="resumoItemValor" text="0" />
+                    </VBox>
+                    <VBox spacing="4">
+                        <Label styleClass="resumoItemLabel" text="FINALIZADOS" />
+                        <Label fx:id="resumoDiaFinalizados" styleClass="resumoItemValor" text="0" />
+                    </VBox>
+                    <Separator styleClass="separador" />
+                    <VBox spacing="4">
+                        <Label styleClass="resumoItemLabel" text="FATURAMENTO DO DIA" />
+                        <Label fx:id="resumoDiaFaturamento" styleClass="preco" text="R$ 0,00" />
+                    </VBox>
+                    <Region VBox.vgrow="ALWAYS" />
+                </VBox>
+            </HBox>
+        </VBox>
+    </children>
+</AnchorPane>
