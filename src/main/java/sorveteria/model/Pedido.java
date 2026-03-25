@@ -52,12 +52,13 @@ public class Pedido {
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
 
         for (ItemPedido itemPedido : itens) {
-            // Pega o produto (que é um ProdutoComposite)
-            ProdutoComposite sorvete = (ProdutoComposite) itemPedido.getItem();
-            // Pega o sabor do sorvete
-            String sabor = sorvete.getSabor();
-            // Dá baixa no estoque usando o sabor
-            estoque.baixarEstoque(sabor, itemPedido.getQuantidade());
+            try {
+                ProdutoComposite sorvete = (ProdutoComposite) itemPedido.getItem();
+                estoque.baixarEstoque(sorvete.getSabor(), itemPedido.getQuantidade());
+            } catch (RuntimeException e) {
+                // ingrediente não cadastrado: loga mas não interrompe o pagamento
+                System.out.println("[ESTOQUE] " + e.getMessage());
+            }
         }
 
         this.pago=true;
@@ -89,11 +90,11 @@ public class Pedido {
     public void setPago(boolean b) {this.pago=b;}
 
     public String getDescricaoResumida() {
-        StringBuilder descricao= new StringBuilder();
-        for (ItemPedido pedido : itens){
-            descricao.append(pedido.toString()).append("\n");
-        }
-        return descricao.toString();
+        if (itens.isEmpty()) return "—";
+        StringBuilder sb = new StringBuilder();
+        for (ItemPedido i : itens)
+            sb.append(i.toString()).append("\n");   // ItemPedido.toString() corrigido
+        return sb.toString().trim();
     }
 
     public Object getPagamento() { return pagamento;}

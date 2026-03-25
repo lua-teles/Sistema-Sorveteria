@@ -2,6 +2,7 @@ package sorveteria.Main;
 
 import sorveteria.banco.DataBaseConnectionSingleton;
 import sorveteria.banco.EstoqueManagerSingleton;
+import sorveteria.banco.IngredienteDAO;
 import sorveteria.banco.PedidoDAO;
 import sorveteria.composite.ExtraLeaf;
 import sorveteria.composite.ProdutoComposite;
@@ -30,7 +31,7 @@ public class Main {
         manager.addObserver(new PreparoTelaObserver());
 
         PedidoDAO pedidoDAO = new PedidoDAO();
-        SorveteriaFacade facade = new SorveteriaFacade(manager, pedidoDAO);
+        SorveteriaFacade facade = new SorveteriaFacade(manager, pedidoDAO,new IngredienteDAO());
 
         EstoqueManagerSingleton estoque = EstoqueManagerSingleton.getInstance();
 
@@ -201,7 +202,7 @@ public class Main {
         }
 
         try {
-            pedido.pagar(pedido.calcularTotal());
+            pedido.pagar();
             System.out.println("\nPagamento realizado com sucesso!");
         } catch (RuntimeException e) {
             System.out.println("\nErro: " + e.getMessage());

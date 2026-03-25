@@ -89,7 +89,7 @@ public class PedidoDAO {
         return lista;
     }
 
-    // ── Atualizar status (chamado pela Facade) ────────────────
+    // atualizar status (chamado pela Facade)
     public void atualizarStatus(int pedidoId, String status) {
         String sql = "UPDATE pedido SET status = ? WHERE id = ?";
 
@@ -99,6 +99,16 @@ public class PedidoDAO {
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao atualizar status: " + e.getMessage(), e);
+        }
+    }
+
+    public void deletar(int id) {
+        String sql = "DELETE FROM pedido WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao deletar pedido: " + e.getMessage(), e);
         }
     }
 }

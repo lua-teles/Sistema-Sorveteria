@@ -131,10 +131,10 @@ public class PedidosController implements Initializable, Observer {
         colTotal.setCellValueFactory(d ->
                 new SimpleStringProperty(String.format("R$ %.2f", d.getValue().calcularTotal())));
         colPagamento.setCellValueFactory(d -> {
-            String pg = d.getValue().getPagamento() == null ? "—"
-                    : d.getValue().getPagamento().getClass().getSimpleName()
-                    .replace("Pagamento", "");
-            return new SimpleStringProperty(pg);
+            Object pg = d.getValue().getPagamento();
+            String nome = pg == null ? "—"
+                    : pg.getClass().getSimpleName().replace("Pagamento", "");
+            return new SimpleStringProperty(nome);
         });
 
 

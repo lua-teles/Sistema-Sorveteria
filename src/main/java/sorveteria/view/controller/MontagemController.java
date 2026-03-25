@@ -2,8 +2,12 @@ package sorveteria.view.controller;
 
 import javafx.event.*;
 import javafx.fxml.*;
+import javafx.geometry.Pos;
 import javafx.scene.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.stage.*;
 import sorveteria.composite.ProdutoComposite;
 import sorveteria.model.*;
@@ -48,12 +52,17 @@ public class MontagemController implements Initializable{
     private MainController mainController;
     private Pedido pedidoAtual;
 
+    // adicione <VBox fx:id="listaItens" spacing="4"/> no resumo do montagem.fxml
+    @FXML private VBox listaItens;
+    @FXML private Spinner<Integer> spinnerQtd;
+
     //--------------------------------- INICIALIZAÇÃO ---------------------------------
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        if (spinnerQtd != null)
+            spinnerQtd.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 99, 1));
         atualizarResumo();
         btnFinalizarPedido.setDisable(true);
-        System.out.println("facade: "+ this.facade);
     }
 
     public void setPedido(Pedido pedido) {
@@ -61,6 +70,7 @@ public class MontagemController implements Initializable{
         labelNumeroPedido.setText("Pedido #" + String.format("%03d", pedido.getId()));
         //habilita finalizar se o pedido já tiver itens (reaberto para edição)
         btnFinalizarPedido.setDisable(pedido.getItens().isEmpty());
+        atualizarListaItens();
     }
 
     //referência ao MainController para navegação após pagamento
@@ -108,26 +118,26 @@ public class MontagemController implements Initializable{
     // ADICIONAR AO PEDIDO cria novo item
     @FXML public void adicionarAoPedido(ActionEvent e) {
         if (baseSelecionada == null || saborSelecionado == null) { //valida a selecao
-            exibirStatus("Escolha a base e o sabor antes de adicionar.");
+            status("Escolha a base e o sabor antes de adicionar.");
             return;
         }
-        // monta o produto composto
-        String nomeItem = baseSelecionada.getNome() + " · " + saborSelecionado.getNome();
-        double precoItem = baseSelecionada.getPreco() + saborSelecionado.getPreco();
-        ProdutoComposite produto = new ProdutoComposite(nomeItem, saborSelecionado.getNome(), precoItem);
 
-        //adiciona cada extra como uma ExtraLeaf (folha do Composite)
-        for (Adicional a : adicionaisSelecionados) {
-            produto.addComponente(a.criarFolha());
-        }
+        // FIX: quantidade vem do Spinner — permite adicionar N do mesmo item
+        int qty = spinnerQtd != null ? spinnerQtd.getValue() : 1;
 
-        // delega ao Facade
-        facade.adicionarItem(pedidoAtual, new ItemPedido(1, produto));
+        ProdutoComposite produto = new ProdutoComposite(
+                baseSelecionada.getNome() + " · " + saborSelecionado.getNome(),
+                saborSelecionado.getNome(),
+                baseSelecionada.getPreco() + saborSelecionado.getPreco()
+        );
+        adicionaisSelecionados.forEach(a -> produto.addComponente(a.criarFolha()));
 
-        exibirStatus("Item adicionado: " + nomeItem);
+        facade.adicionarItem(pedidoAtual, new ItemPedido(qty, produto));
+
+        status("Item adicionado: " + qty + "x " + produto.getNome());
         btnFinalizarPedido.setDisable(false);
-        System.out.println(btnFinalizarPedido.disabledProperty());
         limparSelecao();
+        atualizarListaItens();
     }
 
     // FINALIZAR PEDIDO abrir pop-up de pagamento
@@ -159,6 +169,33 @@ public class MontagemController implements Initializable{
         }
     }
 
+    private void atualizarListaItens() {
+        if (listaItens == null || pedidoAtual == null) return;
+        listaItens.getChildren().clear();
+
+        for (ItemPedido item : pedidoAtual.getItens()) {
+            HBox linha = new HBox(8);
+            linha.setAlignment(Pos.CENTER_LEFT);
+
+            Label nome  = new Label(item.toString());
+            nome.setWrapText(true);
+            nome.getStyleClass().add("resumoItem");
+            HBox.setHgrow(nome, Priority.ALWAYS);
+
+            Button remover = new Button("×");
+            remover.getStyleClass().add("botaoCancelar");
+            remover.setOnAction(ev -> {
+                facade.removerItem(pedidoAtual, item);
+                atualizarListaItens();
+                btnFinalizarPedido.setDisable(pedidoAtual.getItens().isEmpty());
+                atualizarResumo();
+            });
+
+            linha.getChildren().addAll(nome, remover);
+            listaItens.getChildren().add(linha);
+        }
+    }
+
     //CANCELAR PEDIDO cancela pedido e vai pra lista de pedidos
     @FXML public void cancelarPedido(ActionEvent e) throws Exception {
         if (pedidoAtual != null) {
@@ -186,9 +223,10 @@ public class MontagemController implements Initializable{
         precoBase.setText(fmt(vBase));
         precoAdicionais.setText(fmt(vExtra));
         precoTotal.setText(fmt(vBase + vExtra));
+        status("");
     }
 
-    private void exibirStatus(String msg) {
+    private void status(String msg) {
         if (labelStatus != null) labelStatus.setText(msg);
     }
     private void selecionar(Button b)   { b.getStyleClass().setAll("botaoOpcaoSelecionado"); }
@@ -205,16 +243,12 @@ public class MontagemController implements Initializable{
         saborSelecionado = null;
 
         // Desseleciona cada botão de adicional pelo nome
-        dessselecionarBotaoAdicional(btnCaldaChocolate);
-        dessselecionarBotaoAdicional(btnCaldaMorango);
-        dessselecionarBotaoAdicional(btnGranulado);
-        dessselecionarBotaoAdicional(btnFrutas);
-        dessselecionarBotaoAdicional(btnKitkat);
-        dessselecionarBotaoAdicional(btnPacoca);
+        for (Button b : new Button[]{btnCaldaChocolate, btnCaldaMorango, btnGranulado,
+                btnFrutas, btnKitkat, btnPacoca})
+            if (b != null) desselecionar(b);
         adicionaisSelecionados.clear();
-
+        if (spinnerQtd   != null) spinnerQtd.getValueFactory().setValue(1);
         if (txtObservacoes != null) txtObservacoes.clear();
-        exibirStatus("");
         atualizarResumo();
     }
 }

@@ -35,7 +35,7 @@ public class PreparoController implements Initializable, Observer {
     // ---------------------------------INICIALIAZAÇÃO ---------------------------------
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // dados carregados após injeção da facade em setFacade()
+        // recarregar() será chamado pelo MainController via update(null) logo após o registro
     }
     /*@Override
     public void setFacade(SorveteriaFacade facade) {
@@ -61,13 +61,9 @@ public class PreparoController implements Initializable, Observer {
         listaEmPreparo.getChildren().clear();
         listaPronto.getChildren().clear();
         for (Pedido p : facade.getPedidos()) {
-            if (p.getEstado() instanceof PedidoAbertoState) {
-                listaAguardando.getChildren().add(criarCard(p));
-            } else if (p.getEstado() instanceof PedidoPreparoState) {
-                listaEmPreparo.getChildren().add(criarCard(p));
-            } else if (p.getEstado() instanceof PedidoFinalizadoState) {
-                listaPronto.getChildren().add(criarCard(p));
-            }
+            if      (p.getEstado() instanceof PedidoAbertoState)    listaAguardando.getChildren().add(criarCard(p));
+            else if (p.getEstado() instanceof PedidoPreparoState)   listaEmPreparo .getChildren().add(criarCard(p));
+            else if (p.getEstado() instanceof PedidoFinalizadoState) listaPronto   .getChildren().add(criarCard(p));
         }
         // atualiza cada coluna
         countAguardando.setText(String.valueOf(listaAguardando.getChildren().size()));

@@ -18,7 +18,10 @@
                     <Label styleClass="titulo" text="Controle de Estoque" />
                     <Region HBox.hgrow="ALWAYS" />
                     <TextField fx:id="campoBusca" onKeyReleased="#filtrarIngredientes" prefWidth="220" promptText="Buscar ingrediente..." styleClass="textField" />
-                    <Button styleClass="botaoSecundario" text="+ Adicionar Ingrediente" />
+                    <TextField fx:id="campoNovoNome" prefWidth="180" promptText="Nome do ingrediente" />
+                    <TextField fx:id="campoNovaQtd" prefWidth="70" promptText="Qtd." />
+                    <Button onAction="#adicionarIngrediente" styleClass="botaoNovoPedido" text="+ Adicionar" />
+                    <Button onAction="#adicionarIngrediente" styleClass="botaoSecundario" text="+ Adicionar Ingrediente" />
                 </HBox>
                 <TableView fx:id="tabelaEstoque" styleClass="tabelaEstoque" VBox.vgrow="ALWAYS">
                     <columns>

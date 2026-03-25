@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
@@ -96,6 +97,7 @@
                         <Label fx:id="precoTotal" styleClass="preco" text="R$ 0,00" />
                     </HBox>
                     <Region VBox.vgrow="ALWAYS" />
+               <Spinner fx:id="spinnerQtd" min="1" max="99" initialValue="1" editable="true" prefWidth="72"/>
                     <Button fx:id="btnAdicionarAoPedido" maxWidth="Infinity" onAction="#adicionarAoPedido" styleClass="botaoConfirmar" text="Adicionar ao Pedido" />
                     <Button fx:id="btnFinalizarPedido" maxWidth="Infinity" onAction="#abrirPagamento" styleClass="botaoSecundario" text="Finalizar Pedido →" />
                     <Button maxWidth="Infinity" onAction="#cancelarPedido" styleClass="botaoCancelar" text="Cancelar Pedido" />

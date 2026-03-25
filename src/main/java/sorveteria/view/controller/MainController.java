@@ -38,15 +38,15 @@ public class MainController {
             container.getChildren().setAll((Node) loader.load());
             Object ctrl = loader.getController();
             try {
-                var method = ctrl.getClass().getMethod("setMainController", MainController.class);
-                method.invoke(ctrl, this);
-            } catch (NoSuchMethodException ignored) {
-                // Se o controller não tiver setMainController, ignora
-            }
+                ctrl.getClass().getMethod("setMainController", MainController.class)
+                        .invoke(ctrl, this);
+            } catch (NoSuchMethodException ignored) {}
 
             // registra como observer no PedidoManagerSubject quando aplicável
-            if (ctrl instanceof Observer obs && facade != null) {
+            if (ctrl instanceof Observer obs) {
                 facade.getPedidoManager().addObserver(obs);
+                // dispara um update imediato para popular a tela ao carregar
+                obs.update(null);
             }
         } catch (IOException e) {
             e.printStackTrace();

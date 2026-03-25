@@ -63,4 +63,26 @@ public class IngredienteDAO {
         }
         return lista;
     }
+
+    public void inserir(Ingrediente ing) {
+        String sql = "INSERT INTO ingrediente (nome, quantidade) VALUES (?, ?) RETURNING id";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, ing.getNome());
+            stmt.setInt(2, ing.getQuantidade());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) ing.setId(rs.getInt("id"));
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao inserir ingrediente: " + e.getMessage(), e);
+        }
+    }
+
+    public void deletar(int id) {
+        String sql = "DELETE FROM ingrediente WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao deletar ingrediente: " + e.getMessage(), e);
+        }
+    }
 }

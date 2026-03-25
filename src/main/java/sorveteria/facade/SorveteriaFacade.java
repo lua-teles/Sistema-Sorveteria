@@ -15,10 +15,10 @@ public class SorveteriaFacade {
     private static SorveteriaFacade instancia;
 
     private final PedidoManagerSubject pedidoManager;
-    private final PedidoDAO            pedidoDAO;
+    private final PedidoDAO pedidoDAO;
     private final IngredienteDAO ingredienteDAO;
 
-    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO) {
+    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
         this.pedidoManager = pedidoManager;
         this.pedidoDAO     = pedidoDAO;
         this.ingredienteDAO = ingredienteDAO;
@@ -35,9 +35,6 @@ public class SorveteriaFacade {
         return pedidoManager;
     }
 
-    public PedidoDAO getPedidoDAO() {
-        return pedidoDAO;
-    }
     public List<Pedido> getPedidos() {
         return pedidoDAO.listarPedidos();
     }
@@ -59,6 +56,12 @@ public class SorveteriaFacade {
         pedidoDAO.salvar(pedido);
 
         System.out.println("[FACADE] Item adicionado ao pedido ID: " + pedido.getId());
+    }
+
+    // NOVO:remove item
+    public void removerItem(Pedido pedido, ItemPedido item) {
+        pedido.removeItem(item);
+        pedidoManager.notifyObservers(pedido);
     }
 
     // NOVO: registra observação no pedido e notifica observers
@@ -88,10 +91,15 @@ public class SorveteriaFacade {
 
     public void cancelarPedido(Pedido pedido) {
         pedido.cancelar();
-        pedidoManager.notifyObservers(pedido);
         pedidoDAO.atualizarStatus(pedido.getId(), "CANCELADO");
-
         System.out.println("[FACADE] Pedido cancelado - ID: " + pedido.getId());
+        deletarPedido(pedido);
+    }
+
+    public void deletarPedido(Pedido pedido) {
+        pedidoDAO.deletar(pedido.getId());
+        pedidoManager.getPedidos().remove(pedido);
+        pedidoManager.notifyObservers(pedido);
     }
 
     // USADO NOS CONTROLLERS
@@ -103,6 +111,16 @@ public class SorveteriaFacade {
     public void atualizarEstoque(Ingrediente ingrediente) {
         ingredienteDAO.atualizarQuantidade(ingrediente);
         System.out.println("[FACADE] Estoque atualizado: " + ingrediente.getNome() + " → " + ingrediente.getQuantidade());
+    }
+
+    public void inserirIngrediente(Ingrediente ing) {
+        ingredienteDAO.inserir(ing);
+        System.out.println("[FACADE] Ingrediente inserido: " + ing.getNome());
+    }
+
+    public void deletarIngrediente(Ingrediente ing) {
+        ingredienteDAO.deletar(ing.getId());
+        System.out.println("[FACADE] Ingrediente deletado: " + ing.getNome());
     }
 
     public void processarPagamento(Pedido pedido, PagamentoStrategy pagamentoStrategy){

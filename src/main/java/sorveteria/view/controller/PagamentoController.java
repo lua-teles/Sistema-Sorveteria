@@ -47,6 +47,7 @@ public class PagamentoController  implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         btnConfirmarPagamento.setDisable(true);
+        if (dialogItens != null) dialogItens.setWrapText(true);
     }
 
     // ---------------------------------TEXTOS ---------------------------------
@@ -62,12 +63,11 @@ public class PagamentoController  implements Initializable {
         // monta lista de itens como texto descritivo
         if (pedido.getItens() != null && !pedido.getItens().isEmpty()) {
             StringBuilder sb = new StringBuilder();
-            for (ItemPedido item : pedido.getItens()) {
-                sb.append("• ").append(item.getItem().getNome())
-                        .append(" — ").append(fmt(item.calcularSubtotal()))
-                        .append("\n");
-            }
+            for (ItemPedido i : pedido.getItens())
+                sb.append(i.toString()).append("\n");  // itemPedido.toString() corrigido
             dialogItens.setText(sb.toString().trim());
+        } else {
+            dialogItens.setText("—");
         }
     }
 
@@ -81,7 +81,9 @@ public class PagamentoController  implements Initializable {
         painelTroco.setVisible(ehDinheiro);
         painelTroco.setManaged(ehDinheiro);
 
-        totalComDesconto.setText(fmt(valorOriginal));
+        // pix tem 5% de desconto; outros mantêm o valor original
+        double total = radioPix.isSelected() ? valorOriginal * 0.95 : valorOriginal;
+        totalComDesconto.setText(fmt(total));
 
         btnConfirmarPagamento.setDisable(false);
     }
@@ -112,15 +114,15 @@ public class PagamentoController  implements Initializable {
     @FXML public void confirmarPagamento(ActionEvent e) {
 
         if (radioPix.isSelected()) {
-            // facade aplica o desconto de 5% internamente
             facade.processarPagamento(pedidoAtual, new PagamentoPix());
         } else if (radioCartao.isSelected()) {
             facade.processarPagamento(pedidoAtual, new PagamentoCartao());
-        } else {
+        } else if (radioDinheiro.isSelected()) {
             facade.processarPagamento(pedidoAtual, new PagamentoDinheiro());
+        } else {
+            return;
         }
 
-        // Sinaliza ao MontagemController que o pagamento foi concluído
         pedidoAtual.setPago(true);
         fecharDialog(e);
     }

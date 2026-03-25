@@ -46,6 +46,14 @@ public class EstoqueController implements Initializable {
 
     private SorveteriaFacade facade = SorveteriaFacade.getInstance(null,null,null);
 
+    // FIX: campos para adicionar novo ingrediente inline (sem dialog)
+    // Adicione no estoque.fxml:
+    //   <TextField fx:id="campoNovoNome" promptText="Nome do ingrediente" prefWidth="180"/>
+    //   <TextField fx:id="campoNovaQtd"  promptText="Qtd." prefWidth="70"/>
+    //   <Button text="+ Adicionar" onAction="#adicionarIngrediente" styleClass="botaoNovoPedido"/>
+    @FXML private TextField campoNovoNome;
+    @FXML private TextField campoNovaQtd;
+
     //lista completa, usada como base para o filtro de busca. */
     private ObservableList<Ingrediente> listaCompleta;
 
@@ -54,11 +62,29 @@ public class EstoqueController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         configurarColunas();
+        carregarIngredientes();
         // filtro ao vivo aplica busca a cada tecla digitada
         campoBusca.textProperty().addListener((obs, antigo, novo) -> aplicarFiltro(novo));
     }
 
     // --------------------------------- HANDLERS ---------------------------------
+
+
+    @FXML
+    public void adicionarIngrediente() {
+        if (campoNovoNome == null || campoNovoNome.getText().isBlank()) return;
+        try {
+            int qtd = Integer.parseInt(campoNovaQtd.getText().trim());
+            Ingrediente novo = new Ingrediente(0, campoNovoNome.getText().trim(), qtd);
+            facade.inserirIngrediente(novo);   // FIX: persiste no banco via Facade
+            listaCompleta.add(novo);
+            campoNovoNome.clear();
+            campoNovaQtd .clear();
+            atualizarAlertas();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+    }
 
     /*
      filtra a tabela em tempo real conforme o texto digitado no campo de busca.
@@ -110,18 +136,14 @@ public class EstoqueController implements Initializable {
        - colAcoes: spinner inline + botões "+" e "−" que persistem via Facade.
      */
     private void configurarColunas() {
-        colNome.setCellValueFactory(d ->
-                new SimpleStringProperty(d.getValue().getNome()));
+        colNome.setCellValueFactory(d -> new SimpleStringProperty(d.getValue().getNome()));
         colQuantidade.setCellValueFactory(d ->
                 new SimpleIntegerProperty(d.getValue().getQuantidade()).asObject());
-        colUnidade.setCellValueFactory(d ->
-                new SimpleStringProperty("un."));
+        colUnidade.setCellValueFactory(d -> new SimpleStringProperty("un."));
 
-        // badge de status: sem estoque / baixo / OK
         colStatus.setCellValueFactory(d -> {
             int q = d.getValue().getQuantidade();
-            String s = q == 0 ? "Sem estoque" : q <= LIMITE_BAIXO ? "Baixo" : "OK";
-            return new SimpleStringProperty(s);
+            return new SimpleStringProperty(q == 0 ? "Sem estoque" : q <= LIMITE_BAIXO ? "Baixo" : "OK");
         });
         colStatus.setCellFactory(c -> new TableCell<>() {
             @Override protected void updateItem(String s, boolean empty) {
@@ -133,46 +155,52 @@ public class EstoqueController implements Initializable {
                     case "Baixo"       -> "badgeAberto";
                     default            -> "badgePronto";
                 });
-                setGraphic(badge);
-                setText(null);
+                setGraphic(badge); setText(null);
             }
         });
 
-        // coluna de ações: spinner + botão repor (+) e botão reduzir (−)
+        // Coluna de ações: Spinner + botão repor + botão reduzir + botão deletar
         colAcoes.setCellFactory(c -> new TableCell<>() {
-            final Spinner<Integer> spinner = new Spinner<>(1, 999, 1);
-            final Button btnAdicionar = new Button("+");
-            final Button btnReduzir   = new Button("−");
-            final HBox   box = new HBox(6, new Label("Qtd:"), spinner, btnAdicionar, btnReduzir);
+            final Spinner<Integer> spinner    = new Spinner<>(1, 999, 1);
+            final Button           btnAdd     = new Button("+");
+            final Button           btnRem     = new Button("−");
+            final Button           btnDeletar = new Button("×");
+            final HBox             box        = new HBox(6,
+                    new Label("Qtd:"), spinner, btnAdd, btnRem, btnDeletar);
 
             {
                 spinner.setEditable(true);
                 spinner.setPrefWidth(72);
                 spinner.getStyleClass().add("spinnerQtd");
-                btnAdicionar.getStyleClass().add("botaoSecundario");
-                btnReduzir  .getStyleClass().add("botaoCancelar");
+                btnAdd    .getStyleClass().add("botaoSecundario");
+                btnRem    .getStyleClass().add("botaoCancelar");
+                btnDeletar.getStyleClass().add("botaoCancelar");
+                btnDeletar.setText("×");
                 box.setAlignment(Pos.CENTER_LEFT);
                 box.setPadding(new Insets(2, 0, 2, 0));
 
-                // Repõe estoque: incrementa a quantidade e persiste via Facade
-                btnAdicionar.setOnAction(e -> {
-                    Ingrediente ing = getTableView().getItems().get(getIndex());
-                    ing.setQuantidade(ing.getQuantidade() + spinner.getValue());
-                    facade.atualizarEstoque(ing);
-                    tabelaEstoque.refresh();
-                    atualizarAlertas();
-                });
+                btnAdd.setOnAction(e -> ajustar(true));
+                btnRem.setOnAction(e -> ajustar(false));
 
-                // reduz estoque: decrementa sem ir abaixo de zero e persiste via Facade
-                btnReduzir.setOnAction(e -> {
+                // FIX: deleta o ingrediente do banco e da lista
+                btnDeletar.setOnAction(e -> {
                     Ingrediente ing = getTableView().getItems().get(getIndex());
-                    int nova = ing.getQuantidade() - spinner.getValue();
-                    if (nova < 0) return; // impede quantidade negativa silenciosamente
-                    ing.setQuantidade(nova);
-                    facade.atualizarEstoque(ing);
-                    tabelaEstoque.refresh();
+                    facade.deletarIngrediente(ing);
+                    listaCompleta.remove(ing);
                     atualizarAlertas();
                 });
+            }
+
+            private void ajustar(boolean somar) {
+                Ingrediente ing = getTableView().getItems().get(getIndex());
+                int nova = somar
+                        ? ing.getQuantidade() + spinner.getValue()
+                        : ing.getQuantidade() - spinner.getValue();
+                if (nova < 0) return;
+                ing.setQuantidade(nova);
+                facade.atualizarEstoque(ing);
+                tabelaEstoque.refresh();
+                atualizarAlertas();
             }
 
             @Override protected void updateItem(Void v, boolean empty) {
