@@ -7,7 +7,7 @@ public class PagamentoPix implements PagamentoStrategy {
     public void pagar(double valor) {
         double desconto = valor * DESCONTO;
         double valorFinal = valor - desconto;
-        System.out.printf("💰 Desconto PIX (3%%): R$ %.2f%n", desconto);
-        System.out.printf("✅ Pagamento via PIX de R$ %.2f realizado!%n", valorFinal);
+        System.out.printf("Desconto PIX (3%%): R$ %.2f%n", desconto);
+        System.out.printf("Pagamento via PIX de R$ %.2f realizado!%n", valorFinal);
     }
 }

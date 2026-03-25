@@ -21,13 +21,11 @@ public class ProdutoComposite implements ProdutoComponent {
     public void removeComponente(ProdutoComponent c) { componentes.remove(c); }
     public List<ProdutoComponent> getComponentes()   { return componentes; }
 
-    // 🔥 CORREÇÃO: agora retorna apenas o sabor (igual ao estoque)
     @Override
     public String getNome() {
         return sabor;
     }
 
-    // 👉 Getter do sabor (boa prática)
     public String getSabor() {
         return sabor;
     }
