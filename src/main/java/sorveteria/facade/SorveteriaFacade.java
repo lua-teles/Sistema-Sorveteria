@@ -17,23 +17,14 @@ public class SorveteriaFacade {
         this.pedidoDAO     = pedidoDAO;
     }
 
-    public PedidoManagerSubject getPedidoManager() {
-        return pedidoManager;
-    }
-
-    public PedidoDAO getPedidoDAO() {
-        return pedidoDAO;
-    }
-    public List<Pedido> getPedidos() {
-        return pedidoManager.getPedidos();
-    }
+    public PedidoManagerSubject getPedidoManager() { return pedidoManager; }
+    public PedidoDAO getPedidoDAO()                { return pedidoDAO; }
+    public List<Pedido> getPedidos()               { return pedidoManager.getPedidos(); }
 
     public Pedido criarPedido() {
         Pedido pedido = new Pedido();
-
         pedidoManager.addPedido(pedido);
         pedidoDAO.salvar(pedido);
-
         System.out.println("[FACADE] Pedido criado - ID: " + pedido.getId());
         return pedido;
     }
@@ -41,15 +32,22 @@ public class SorveteriaFacade {
     public void adicionarItem(Pedido pedido, ItemPedido item) {
         pedido.addItem(item);
         pedidoManager.notifyObservers(pedido);
-
         System.out.println("[FACADE] Item adicionado ao pedido ID: " + pedido.getId());
+    }
+
+    // NOVO: registra observação no pedido e notifica observers
+    public void adicionarObservacao(Pedido pedido, String obs) {
+        if (obs != null && !obs.isBlank()) {
+            pedido.setObservacao(obs);
+            pedidoManager.notifyObservers(pedido);
+            System.out.println("[FACADE] Observação registrada no pedido ID: " + pedido.getId());
+        }
     }
 
     public void iniciarPreparo(Pedido pedido) {
         pedido.iniciarPreparo();
         pedidoManager.notifyObservers(pedido);
         pedidoDAO.atualizarStatus(pedido.getId(), "PREPARO");
-
         System.out.println("[FACADE] Preparo iniciado - pedido ID: " + pedido.getId());
     }
 
@@ -57,7 +55,6 @@ public class SorveteriaFacade {
         pedido.finalizar();
         pedidoManager.notifyObservers(pedido);
         pedidoDAO.atualizarStatus(pedido.getId(), "FINALIZADO");
-
         System.out.println("[FACADE] Pedido finalizado - ID: " + pedido.getId());
     }
 
@@ -65,7 +62,6 @@ public class SorveteriaFacade {
         pedido.cancelar();
         pedidoManager.notifyObservers(pedido);
         pedidoDAO.atualizarStatus(pedido.getId(), "CANCELADO");
-
         System.out.println("[FACADE] Pedido cancelado - ID: " + pedido.getId());
     }
 }

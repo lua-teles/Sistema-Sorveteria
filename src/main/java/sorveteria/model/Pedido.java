@@ -14,6 +14,9 @@ public class Pedido {
     private final List<ItemPedido> itens = new ArrayList<>();
     private PagamentoStrategy pagamento;
     private EstadoPedido estado;
+    private String observacao = "";
+    public void setObservacao(String obs) { this.observacao = obs; }
+    public String getObservacao()         { return observacao; }
 
     public Pedido() {
         this.estado = new PedidoAbertoState();

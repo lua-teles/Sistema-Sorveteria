@@ -6,6 +6,7 @@ import sorveteria.banco.PedidoDAO;
 import sorveteria.composite.ExtraLeaf;
 import sorveteria.composite.ProdutoComposite;
 import sorveteria.facade.SorveteriaFacade;
+import sorveteria.model.BaseSorvete;
 import sorveteria.model.ItemPedido;
 import sorveteria.model.Pedido;
 import sorveteria.model.SaborSorvete;
@@ -71,102 +72,122 @@ public class Main {
         System.out.println("\nAté logo!");
     }
 
+
     private static void fluxoPedido(SorveteriaFacade facade) {
 
         Pedido pedido = facade.criarPedido();
 
         boolean adicionando = true;
         while (adicionando) {
-            System.out.println("\n── Novo Item ──────────────────────────────");
-            SaborSorvete.listarSabores();
-            System.out.print("  Sabor: ");
-            String sabor = sc.nextLine().trim();
+            System.out.println("\n── Monte seu Sorvete ───────────────────────");
 
-            // Valida sabor (já ignora maiúsculo/minúsculo)
-            if (!SaborSorvete.isValid(sabor)) {
+
+            System.out.println("\n  1. Escolha a Base:");
+            BaseSorvete.listarBases();
+            System.out.print("  Número da base: ");
+            int numBase = lerInt();
+            String base = BaseSorvete.fromNumero(numBase);
+
+            if (base == null) {
+                System.out.println("  Base inválida! Tente novamente.");
+                continue;
+            }
+            double precoBase = BaseSorvete.getPrecoBase(base);
+
+
+            System.out.println("\n  2. Escolha o Sabor:");
+            SaborSorvete.listarSabores();
+            System.out.print("  Número do sabor: ");
+            int numSabor = lerInt();
+            String sabor = SaborSorvete.fromNumero(numSabor);
+
+            if (sabor == null) {
                 System.out.println("  Sabor inválido! Tente novamente.");
                 continue;
             }
+            double precoSabor = SaborSorvete.getPrecoBase(sabor);
 
-            double precoBase = SaborSorvete.getPrecoBase(sabor);
-            System.out.println("  Preço do sorvete de " + sabor + ": R$ " + String.format("%.2f", precoBase));
+            double precoTotal = precoBase + precoSabor;
 
-            System.out.print("  Quantidade: ");
+            System.out.print("\n  Quantidade: ");
             int qtd = lerInt();
+            if (qtd <= 0) {
+                System.out.println("  Quantidade inválida.");
+                continue;
+            }
 
-            ProdutoComposite sorvete = new ProdutoComposite("Sorvete", sabor, precoBase);
+            ProdutoComposite sorvete = new ProdutoComposite("Sorvete", base, sabor, precoTotal);
 
-            System.out.println("\n  Extras disponíveis:");
-            System.out.println("    Calda     - R$ 1,50");
-            System.out.println("    Granulado - R$ 0,75");
+
+            System.out.println("\n  3. Adicionais (0 para finalizar):");
+            SaborSorvete.listarExtras();
 
             boolean adicionandoExtra = true;
             while (adicionandoExtra) {
-                System.out.print("  Adicionar extra? (calda / granulado / nao): ");
-                String extra = sc.nextLine().trim().toLowerCase();
+                System.out.print("  Número do adicional (0 = nenhum/finalizar): ");
+                int numExtra = lerInt();
 
-                switch (extra) {
-                    case "calda":
-                        sorvete.addComponente(new ExtraLeaf("Calda", 1.50));
-                        System.out.println("    ✓ Calda adicionada! + R$ 1,50");
-                        break;
-                    case "granulado":
-                        sorvete.addComponente(new ExtraLeaf("Granulado", 0.75));
-                        System.out.println("    ✓ Granulado adicionado! + R$ 0,75");
-                        break;
-                    case "nao":
-                    case "":
-                        adicionandoExtra = false;
-                        continue;
-                    default:
-                        System.out.println("  Extra não reconhecido.");
-                        continue;
+                if (numExtra == 0) {
+                    adicionandoExtra = false;
+                    continue;
                 }
 
-                System.out.print("  Adicionar mais um extra? (s/n): ");
-                adicionandoExtra = sc.nextLine().trim().equalsIgnoreCase("s");
+                String extraNome  = SaborSorvete.extraNomeFromNumero(numExtra);
+                double extraPreco = SaborSorvete.extraPrecoFromNumero(numExtra);
+
+                if (extraNome == null) {
+                    System.out.println("  Adicional inválido.");
+                    continue;
+                }
+
+                sorvete.addComponente(new ExtraLeaf(extraNome, extraPreco));
+                System.out.printf("    ✓ %s adicionado! + R$ %.2f%n", extraNome, extraPreco);
             }
 
-            System.out.println("\n  ─── RESUMO DO SORVETE ───");
-            System.out.println("  Sorvete de " + sabor + ": R$ " + String.format("%.2f", precoBase));
 
-            if (sorvete.getComponentes().size() > 0) {
-                System.out.println("  Extras adicionados:");
-                for (var componente : sorvete.getComponentes()) {
-                    System.out.println("    - " + componente.getNome() + ": R$ " + String.format("%.2f", componente.getPreco()));
-                }
+            System.out.print("\n  4. Observações (Enter para pular): ");
+            String obs = sc.nextLine().trim();
+
+
+            System.out.println("\n  ─── RESUMO DO ITEM ───────────────────────");
+            System.out.println("  Base   : " + base  + " (R$ " + String.format("%.2f", precoBase)  + ")");
+            System.out.println("  Sabor  : " + sabor + " (R$ " + String.format("%.2f", precoSabor) + ")");
+            if (!sorvete.getComponentes().isEmpty()) {
+                System.out.println("  Adicionais:");
+                sorvete.getComponentes().forEach(c ->
+                        System.out.printf("    - %-16s R$ %.2f%n", c.getNome(), c.getPreco()));
             } else {
-                System.out.println("  Sem extras adicionados");
+                System.out.println("  Adicionais: Nenhum");
             }
-
-            double precoUnitario = sorvete.getPreco();
-            System.out.println("  Preço unitário total: R$ " + String.format("%.2f", precoUnitario));
-            System.out.println("  Quantidade: " + qtd);
-            System.out.println("  Subtotal do item: R$ " + String.format("%.2f", qtd * precoUnitario));
+            if (!obs.isBlank()) System.out.println("  Observação: " + obs);
+            System.out.printf("  Preço unitário : R$ %.2f%n", sorvete.getPreco());
+            System.out.printf("  Subtotal (%dx) : R$ %.2f%n", qtd, qtd * sorvete.getPreco());
+            System.out.println("  ─────────────────────────────────────────");
 
             facade.adicionarItem(pedido, new ItemPedido(qtd, sorvete));
+            facade.adicionarObservacao(pedido, obs);
 
             System.out.print("\nAdicionar mais um item ao pedido? (s/n): ");
             adicionando = sc.nextLine().trim().equalsIgnoreCase("s");
         }
 
-        // Mostra resumo do pedido
+
         System.out.println("\n======================================");
-        System.out.println("       RESUMO DO PEDIDO");
+        System.out.println("         RESUMO DO PEDIDO");
         System.out.println("======================================");
-        System.out.println("Itens do pedido:");
         for (ItemPedido item : pedido.getItens()) {
-            System.out.println("  - " + item.getQuantidade() + "x " + item.getItem().getNome() +
-                    " de " + ((ProdutoComposite) item.getItem()).getSabor() +
-                    " | R$ " + String.format("%.2f", item.calcularSubtotal()));
+            ProdutoComposite s = (ProdutoComposite) item.getItem();
+            System.out.printf("  %dx %-10s | Base: %-10s | R$ %.2f%n",
+                    item.getQuantidade(), s.getSabor(), s.getBase(),
+                    item.calcularSubtotal());
         }
         System.out.println("--------------------------------------");
-        System.out.println("  TOTAL DO PEDIDO: R$ " + String.format("%.2f", pedido.calcularTotal()));
+        System.out.printf("  TOTAL: R$ %.2f%n", pedido.calcularTotal());
         System.out.println("======================================\n");
 
-        // Escolhe a forma de pagamento
-        System.out.println("── Forma de Pagamento ──────────────────────");
-        System.out.println("  Total a pagar: R$ " + String.format("%.2f", pedido.calcularTotal()));
+
+        System.out.println("── Forma de Pagamento ──────────────────────────");
+        System.out.printf("  Total a pagar: R$ %.2f%n", pedido.calcularTotal());
         System.out.println("  1. PIX");
         System.out.println("  2. Cartão");
         System.out.println("  3. Dinheiro");
@@ -176,37 +197,28 @@ public class Main {
             case 1  -> pedido.setPagamento(new PagamentoPix());
             case 2  -> pedido.setPagamento(new PagamentoCartao());
             case 3  -> pedido.setPagamento(new PagamentoDinheiro());
-            default -> {
-                System.out.println("Opção inválida, usando PIX.");
-                pedido.setPagamento(new PagamentoPix());
-            }
+            default -> { System.out.println("Opção inválida, usando PIX."); pedido.setPagamento(new PagamentoPix()); }
         }
 
-        // Realiza o pagamento
         try {
             pedido.pagar(pedido.calcularTotal());
             System.out.println("\nPagamento realizado com sucesso!");
         } catch (RuntimeException e) {
             System.out.println("\nErro: " + e.getMessage());
-            System.out.println("   Pedido cancelado por falta de estoque.");
+            System.out.println("Pedido cancelado por falta de estoque.");
             facade.cancelarPedido(pedido);
             return;
         }
-
-        // Inicia o preparo após o pagamento
+        
         System.out.println("\nPedido pago! Iniciando o preparo...");
         facade.iniciarPreparo(pedido);
 
-        // Simula o tempo de preparo
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        System.out.println("\n[GERENTE] Pedido #" + pedido.getId() + " em preparo.");
+        System.out.print("          Digite 'pronto' para finalizar o pedido: ");
+        while (!sc.nextLine().trim().equalsIgnoreCase("pronto")) {
+            System.out.print("          Digite 'pronto' para finalizar o pedido: ");
         }
 
-        System.out.println("Pedido pronto!\n");
-
-        // Finaliza o pedido
         facade.finalizarPedido(pedido);
         System.out.println("Pedido finalizado! Obrigado pela compra!");
     }
@@ -218,29 +230,12 @@ public class Main {
             return;
         }
         System.out.println("\n====== PEDIDOS DA SESSÃO ======");
-        lista.forEach(p ->
-                System.out.printf("  Pedido #%d | estado: %s | total: R$ %.2f%n",
-                        p.getId(),
-                        p.getEstado().getClass().getSimpleName(),
-                        p.calcularTotal())
-        );
+        lista.forEach(p -> System.out.printf("  Pedido #%d | estado: %s | total: R$ %.2f%n",
+                p.getId(), p.getEstado().getClass().getSimpleName(), p.calcularTotal()));
     }
 
     private static int lerInt() {
-        try {
-            return Integer.parseInt(sc.nextLine().trim());
-        }
-        catch (NumberFormatException e) {
-            return -1;
-        }
-    }
-
-    private static double lerDouble() {
-        try {
-            return Double.parseDouble(sc.nextLine().trim().replace(",", "."));
-        }
-        catch (NumberFormatException e) {
-            return 0.0;
-        }
+        try { return Integer.parseInt(sc.nextLine().trim()); }
+        catch (NumberFormatException e) { return -1; }
     }
 }
