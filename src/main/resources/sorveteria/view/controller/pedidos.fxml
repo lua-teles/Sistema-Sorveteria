@@ -22,10 +22,9 @@
                     <HBox alignment="CENTER_LEFT" spacing="16">
                         <Label styleClass="titulo" text="Pedidos do Dia" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <ToggleButton fx:id="filtroTodos" onAction="#filtrarTodos" selected="true" styleClass="botaoOpcao" text="Todos">
-                     <toggleGroup>
-                        <ToggleGroup fx:id="filtroGroup" />
-                     </toggleGroup></ToggleButton>
+                        <ToggleButton fx:id="filtroTodos" onAction="#filtrarTodos" selected="true"
+                                      styleClass="botaoOpcao" text="Todos"
+                                      toggleGroup="$filtroGroup"/>
                         <ToggleButton fx:id="filtroAbertos" onAction="#filtrarAbertos" styleClass="botaoOpcao" text="Abertos" toggleGroup="$filtroGroup" />
                         <ToggleButton fx:id="filtroPreparo" onAction="#filtrarPreparo" styleClass="botaoOpcao" text="Em Preparo" toggleGroup="$filtroGroup" />
                         <ToggleButton fx:id="filtroProntos" onAction="#filtrarProntos" styleClass="botaoOpcao" text="Prontos" toggleGroup="$filtroGroup" />

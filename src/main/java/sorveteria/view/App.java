@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import sorveteria.banco.IngredienteDAO;
 import sorveteria.banco.PedidoDAO;
@@ -29,6 +30,9 @@ public class App extends Application {
 
         stage.setTitle("Sorveteria");
         stage.setScene(scene);
+
+        Image icone = new Image(getClass().getResourceAsStream("/sorveteria/view/controller/sorvete.jpg"));
+        stage.getIcons().add(icone);
 
         stage.setMaximized(true);// ocupa a tela toda
         stage.setMinWidth(900);

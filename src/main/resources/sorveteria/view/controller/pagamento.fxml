@@ -58,7 +58,7 @@
                         <RadioButton fx:id="radioDinheiro" onAction="#atualizarTotal" styleClass="radioOpcao" text="Dinheiro" toggleGroup="$grupoPagamento" />
                         <HBox fx:id="painelTroco" alignment="CENTER_LEFT" managed="false" spacing="10" style="-fx-padding: 4 0 0 22;" visible="false">
                             <Label styleClass="label-campo" text="Valor entregue: R$" />
-                            <TextField fx:id="campoTroco" prefWidth="90" promptText="0,00" styleClass="textField" />
+                            <TextField fx:id="campoTroco" prefWidth="90" promptText="0,00" styleClass="textField" onKeyReleased="#calcularTroco"/>
                             <Label styleClass="label-campo" text="Troco:" />
                             <Label fx:id="labelTroco" styleClass="resumoItemValor" text="R$ 0,00" />
                         </HBox>

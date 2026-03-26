@@ -155,7 +155,6 @@ public class MontagemController implements Initializable{
             Stage dialog = new Stage();
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(btnFinalizarPedido.getScene().getWindow());
-            dialog.setResizable(false);
             dialog.initStyle(StageStyle.UNDECORATED);
             dialog.setScene(new Scene(root));
             dialog.showAndWait();
