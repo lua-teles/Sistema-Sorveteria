@@ -4,14 +4,14 @@
 
 ## Sumário
 
-- [Demonstração](#️-demonstração)
-- [Sobre o Projeto](#-sobre-o-projeto)
-- [Funcionalidades](#-funcionalidades)
-- [Tecnologias Utilizadas](#️-tecnologias-utilizadas)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Banco de Dados](#️-banco-de-dados)
-- [Como Executar](#️-como-executar)
-- [Design Patterns Aplicados](#-design-patterns-aplicados)
+- [Demonstração](#demonstracao)
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Banco de Dados](#banco-de-dados)
+- [Como Executar](#como-executar)
+- [Design Patterns Aplicados](#design-patterns-aplicados)
 - [Diagramas](#diagramas)
 ---
 
@@ -144,7 +144,7 @@ private static final String PASSWORD = "sua_senha";
 
 ---
 
-## ▷ Como Executar
+## Como Executar
 
 ### Pré-requisitos
 
