@@ -18,7 +18,7 @@ public class SorveteriaFacade {
     private final PedidoDAO pedidoDAO;
     private final IngredienteDAO ingredienteDAO;
 
-    public SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
+    private SorveteriaFacade(PedidoManagerSubject pedidoManager, PedidoDAO pedidoDAO, IngredienteDAO ingredienteDAO) {
         this.pedidoManager = pedidoManager;
         this.pedidoDAO     = pedidoDAO;
         this.ingredienteDAO = ingredienteDAO;
