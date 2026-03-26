@@ -185,7 +185,7 @@ private static final String PASSWORD = "sua_senha";
 
 ## Design Patterns Aplicados
 
-O sistema utiliza cinco padrões de projeto, cada um resolvendo um problema específico do domínio da sorveteria:
+O sistema utiliza seis padrões de projeto, cada um resolvendo um problema específico do domínio da sorveteria:
 
 ### Composite — Montagem do sorvete
 **Pacote:** `sorveteria.composite`
