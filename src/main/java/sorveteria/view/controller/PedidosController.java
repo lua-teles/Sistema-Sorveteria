@@ -35,7 +35,7 @@ recebe a facade injetada pelo MainController.
 public class PedidosController implements Initializable, Observer {
 
     @FXML private TableView<Pedido> tabelaPedidos;
-    @FXML private TableColumn<Pedido, String> colId, colDescricao, colStatus, colPagamento, colTotal;
+    @FXML private TableColumn<Pedido, String> colId, colDescricao, colStatus, colTotal;
     @FXML private TableColumn<Pedido, Void> colAcoes;
     @FXML private Label resumoDiaAbertos, resumoDiaPreparo, resumoDiaFinalizados, resumoDiaFaturamento;
 
@@ -130,12 +130,6 @@ public class PedidosController implements Initializable, Observer {
                 new SimpleStringProperty(d.getValue().getDescricaoResumida()));
         colTotal.setCellValueFactory(d ->
                 new SimpleStringProperty(String.format("R$ %.2f", d.getValue().calcularTotal())));
-        colPagamento.setCellValueFactory(d -> {
-            Object pg = d.getValue().getPagamento();
-            String nome = pg == null ? "—"
-                    : pg.getClass().getSimpleName().replace("Pagamento", "");
-            return new SimpleStringProperty(nome);
-        });
 
 
         // coluna Status: exibe um Label com classe CSS de badge

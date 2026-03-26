@@ -134,6 +134,8 @@ public class MontagemController implements Initializable{
 
         facade.adicionarItem(pedidoAtual, new ItemPedido(qty, produto));
 
+        System.out.println("Nome do produto: " + produto.getNome());
+        System.out.println("toString do item: " + new ItemPedido(qty, produto).toString());
         status("Item adicionado: " + qty + "x " + produto.getNome());
         btnFinalizarPedido.setDisable(false);
         limparSelecao();
@@ -154,6 +156,7 @@ public class MontagemController implements Initializable{
             dialog.initModality(Modality.APPLICATION_MODAL);
             dialog.initOwner(btnFinalizarPedido.getScene().getWindow());
             dialog.setResizable(false);
+            dialog.initStyle(StageStyle.UNDECORATED);
             dialog.setScene(new Scene(root));
             dialog.showAndWait();
 

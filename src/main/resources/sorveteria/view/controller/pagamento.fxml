@@ -35,7 +35,10 @@
                 <Separator />
                 <VBox spacing="4">
                     <Label styleClass="resumoItemLabel" text="ITENS" />
-                    <Label fx:id="dialogItens" styleClass="resumoItem" text="—" wrapText="true" />
+                    <Label fx:id="dialogItens" styleClass="resumoItem"
+                           text="—" wrapText="true"
+                           maxWidth="Infinity"
+                           minHeight="-Infinity" />
                 </VBox>
                 <Separator />
                 <VBox spacing="10">

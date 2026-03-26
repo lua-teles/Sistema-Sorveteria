@@ -16,7 +16,6 @@
             <HBox alignment="CENTER_LEFT" styleClass="topbar">
                 <Label styleClass="topbar-title" text="🍦 Sorveteria" />
                 <Button onAction="#irPedidos" styleClass="navButton" text="Pedidos" />
-                <Button onAction="#irMontagem" styleClass="navButton" text="Montagem" />
                 <Button onAction="#irPreparo" styleClass="navButton" text="Preparo" />
                 <Button onAction="#irEstoque" styleClass="navButton" text="Estoque" />
                 <Region HBox.hgrow="ALWAYS" />

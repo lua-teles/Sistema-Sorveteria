@@ -35,7 +35,6 @@
                             <TableColumn fx:id="colId" prefWidth="60" text="#" />
                             <TableColumn fx:id="colDescricao" prefWidth="280" text="Descrição" />
                             <TableColumn fx:id="colStatus" prefWidth="130" text="Status" />
-                            <TableColumn fx:id="colPagamento" prefWidth="110" text="Pagamento" />
                             <TableColumn fx:id="colTotal" prefWidth="100" text="Total" />
                             <TableColumn fx:id="colAcoes" prefWidth="180" text="Ações" />
                         </columns>

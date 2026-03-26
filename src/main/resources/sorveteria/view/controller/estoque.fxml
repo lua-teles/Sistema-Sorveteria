@@ -29,7 +29,7 @@
                         <TableColumn fx:id="colQuantidade" prefWidth="150" text="Qtd. em Estoque" />
                         <TableColumn fx:id="colUnidade" prefWidth="100" text="Unidade" />
                         <TableColumn fx:id="colStatus" prefWidth="130" text="Status" />
-                        <TableColumn fx:id="colAcoes" prefWidth="200" text="Ações" />
+                        <TableColumn fx:id="colAcoes" prefWidth="280" text="Ações" />
                     </columns>
                     <placeholder>
                         <Label styleClass="emptyStateText" text="Nenhum ingrediente cadastrado." />

@@ -17,4 +17,9 @@ public class ItemPedido {
 
     public ProdutoComponent getItem()  { return item; }
     public int getQuantidade()         { return quantidade; }
+    @Override
+    public String toString() {
+        return quantidade + "x " + item.getNome()
+                + " — R$ " + String.format("%.2f", calcularSubtotal());
+    }
 }

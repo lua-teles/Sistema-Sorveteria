@@ -88,6 +88,7 @@ public class PreparoController implements Initializable, Observer {
         id.getStyleClass().add("pedidoId");
         desc.getStyleClass().add("pedidoDescricao");
         desc.setWrapText(true);
+        desc.setMaxWidth(Double.MAX_VALUE);
         preco.getStyleClass().add("pedidoValor");
 
         card.getChildren().addAll(id, desc, preco);
