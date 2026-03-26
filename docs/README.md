@@ -1,4 +1,4 @@
-# Sistema de Gerenciamento de Sorveteria
+﻿# Sistema de Gerenciamento de Sorveteria
 
 > Projeto desenvolvido para a disciplina de **Análise e Projeto de Sistemas**, com foco na aplicação prática de Padrões de Projeto (Design Patterns) e conceitos de Programação Orientada a Objetos.
 
@@ -19,7 +19,7 @@
 
 > Demo do sistema em funcionamento:
 
-![demo](docs/imagens/demo.gif)
+![demo.gif](imagens/demo.gif)
 
 ---
 
@@ -223,19 +223,18 @@ O ciclo de vida do pedido é modelado por estados concretos (`PedidoAbertoState`
 
 ### Diagrama de Casos de Uso
 
-![Diagrama de Casos de Uso](docs/imagens/diagrama-casos-de-uso.jpg)
+![diagrama-casos-de-uso.jpg](imagens/diagrama-casos-de-uso.jpg)
 
 ---
 
 ### Diagrama de Classes
 
-![Diagrama de Classes](docs/imagens/diagrama-classes.jpg)
+![diagrama-classes.jpg](imagens/diagrama-classes.jpg)
 
 ---
 
 ### Diagrama de Sequência
 
-![Diagrama de Sequência 1](docs/imagens/diagrama-sequencia1.jpg)
-![Diagrama de Sequência 2](docs/imagens/diagrama-sequencia2.jpg)
-![Diagrama de Sequência 3](docs/imagens/diagrama-sequencia3.jpg)
-
+![diagrama-sequencia1.jpg](imagens/diagrama-sequencia1.jpg)
+![diagrama-sequencia2.jpg](imagens/diagrama-sequencia2.jpg)
+![diagrama-sequencia3.jpg](imagens/diagrama-sequencia3.jpg)
