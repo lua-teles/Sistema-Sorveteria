@@ -17,7 +17,10 @@ public class Pedido {
     private EstadoPedido estado;
     private String observacao = "";
     public void setObservacao(String obs) { this.observacao = obs; }
-    public String getObservacao()         { return observacao; }
+    public String getObservacao() { return observacao; }
+
+    private String descricaoPersistida = "";
+    private double totalPersistido = 0.0;
 
     public Pedido() {
         this.estado = new PedidoAbertoState();
@@ -40,7 +43,9 @@ public class Pedido {
     }
 
     public double calcularTotal() {
-        return itens.stream().mapToDouble(ItemPedido::calcularSubtotal).sum();
+        if (!itens.isEmpty())
+            return itens.stream().mapToDouble(ItemPedido::calcularSubtotal).sum();
+        return totalPersistido; // fallback para pedidos carregados do banco
     }
     
     public void pagar() {
@@ -84,17 +89,25 @@ public class Pedido {
         estado.cancelar(this);
     }
 
+    public void setDescricaoPersistida(String d) { this.descricaoPersistida = d; }
+
+    public void setTotalPersistido(double t)     { this.totalPersistido = t; }
+
     // USADO NOS CONTROLLERS
 
     public boolean isPago(){return this.pago;}
     public void setPago(boolean b) {this.pago=b;}
 
     public String getDescricaoResumida() {
-        if (itens.isEmpty()) return "—";
-        StringBuilder sb = new StringBuilder();
-        for (ItemPedido i : itens)
-            sb.append(i.toString()).append("\n");   // ItemPedido.toString() corrigido
-        return sb.toString().trim();
+        // se tem itens em memória, usa eles (pedido recém-montado)
+        if (!itens.isEmpty()) {
+            StringBuilder sb = new StringBuilder();
+            for (ItemPedido i : itens) sb.append(i.toString()).append("\n");
+            return sb.toString().trim();
+        }
+        // senão usa o que veio do banco (pedido carregado na inicialização)
+        return descricaoPersistida != null && !descricaoPersistida.isBlank()
+                ? descricaoPersistida : "—";
     }
 
     public Object getPagamento() { return pagamento;}

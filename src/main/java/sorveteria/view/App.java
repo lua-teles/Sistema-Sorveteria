@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import sorveteria.banco.IngredienteDAO;
 import sorveteria.banco.PedidoDAO;
 import sorveteria.facade.SorveteriaFacade;
+import sorveteria.model.Pedido;
 import sorveteria.observer.PedidoManagerSubject;
 import sorveteria.view.controller.MainController;
 
@@ -21,8 +22,6 @@ public class App extends Application {
         PedidoDAO pedidoDAO = new PedidoDAO();
         IngredienteDAO ingredienteDAO = new IngredienteDAO();
         SorveteriaFacade facade= SorveteriaFacade.getInstance(managerSubject,pedidoDAO,ingredienteDAO);
-
-        MainController mainController = new MainController();
 
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/sorveteria/view/controller/main.fxml"));
 

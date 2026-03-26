@@ -82,3 +82,5 @@ INSERT INTO adicional (nome, preco) VALUES
 INSERT INTO funcionario (nome, cargo) VALUES
                                           ('Maria', 'Atendente'),
                                           ('João',  'Gerente');
+
+ALTER TABLE pedido ADD COLUMN IF NOT EXISTS descricao TEXT DEFAULT '';

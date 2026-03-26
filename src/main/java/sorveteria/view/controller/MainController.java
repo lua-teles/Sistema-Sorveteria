@@ -19,7 +19,7 @@ controller da tela principal (main.fxml)
  NÃO contém lógica de negócio.
  */
 
-public class MainController {
+public class MainController{
 
     @FXML
     private StackPane container;
@@ -36,11 +36,11 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getResource("/sorveteria/view/controller/"+fxml));
             container.getChildren().setAll((Node) loader.load());
+
             Object ctrl = loader.getController();
-            try {
-                ctrl.getClass().getMethod("setMainController", MainController.class)
-                        .invoke(ctrl, this);
-            } catch (NoSuchMethodException ignored) {}
+            if (ctrl instanceof PedidosController pc) {
+                pc.setMainController(this);
+            }
 
             // registra como observer no PedidoManagerSubject quando aplicável
             if (ctrl instanceof Observer obs) {
